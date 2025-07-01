@@ -14,7 +14,7 @@
         "se7enxweb/ezpublish-legacy-installer": "^2.0.4",
         "se7enxweb/ezpublish": "^6.0.9",
         "se7enxweb/ezpublish-kernel": "^7.5.24",
-        "ezsystems/ezplatform-xmltext-fieldtype": "^1.8",
+        "se7enxweb/ezplatform-xmltext-fieldtype": "^1.8",
         "sensio/distribution-bundle": "^5.0.24",
         "twig/twig": "^1.35 || ^2.5"
     },
