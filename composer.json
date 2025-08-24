@@ -15,13 +15,13 @@
         "se7enxweb/ezpublish": "^6.0.9",
         "se7enxweb/ezpublish-kernel": "^7.5.24",
         "se7enxweb/ezplatform-xmltext-fieldtype": "^1.8",
-        "sensio/distribution-bundle": "^5.0.24",
-        "twig/twig": "^1.35 || ^2.5"
+        "se7enxweb/sensio-distribution-bundle": "^5.0.24",
+        "se7enxweb/twig": "^1.35 || ^2.5"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^2.16.2",
         "ezsystems/ezplatform-code-style": "^0.1",
-        "ezsystems/ezplatform-http-cache": "~0.9",
+        "se7enxweb/ezplatform-http-cache": "~0.9",
         "matthiasnoback/symfony-dependency-injection-test": "^2.3",
         "phpunit/phpunit": "^11.5.25",
         "mikey179/vfsstream": "~1.1.0"
