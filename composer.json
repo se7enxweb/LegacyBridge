@@ -13,7 +13,7 @@
     "prefer-stable": true,
     "require": {
         "se7enxweb/ezpublish-legacy-installer": "^2.0.4",
-        "se7enxweb/ezpublish": "dev-main",
+        "se7enxweb/exponential": "^6.0.10",
         "se7enxweb/ezpublish-kernel": "^7.5.24",
         "se7enxweb/ezplatform-xmltext-fieldtype": "^1.8",
         "se7enxweb/sensio-distribution-bundle": "^5.0.24",
