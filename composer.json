@@ -18,7 +18,7 @@
     "require": {
         "php": "^8.0",
         "se7enxweb/ezpublish-legacy-installer": "^2.0.4",
-        "ezsystems/ezpublish-legacy": "^2019.03",
+        "se7enxweb/exponential": "^6.0.12",
         "ezsystems/ezplatform-kernel": "~1.3",
         "se7enxweb/ezplatform-xmltext-fieldtype": "^2.0",
         "symfony/framework-bundle": "^5.4"
