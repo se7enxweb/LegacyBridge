@@ -12,10 +12,10 @@ use eZ\Bundle\EzPublishCoreBundle\DependencyInjection\Configuration\SiteAccessAw
 
 class Configuration extends SiteAccessConfiguration
 {
-    public function getConfigTreeBuilder()
+    public function getConfigTreeBuilder(): TreeBuilder
     {
-        $treeBuilder = new TreeBuilder();
-        $rootNode = $treeBuilder->root('ez_publish_legacy');
+        $treeBuilder = new TreeBuilder('ez_publish_legacy');
+        $rootNode = $treeBuilder->getRootNode();
         $rootNode
             ->children()
                 ->booleanNode('enabled')->defaultTrue()->end()
