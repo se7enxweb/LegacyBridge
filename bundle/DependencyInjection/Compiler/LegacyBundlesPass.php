@@ -8,7 +8,6 @@ namespace eZ\Bundle\EzPublishLegacyBundle\DependencyInjection\Compiler;
 
 use Symfony\Component\DependencyInjection\Compiler\CompilerPassInterface;
 use Symfony\Component\DependencyInjection\ContainerBuilder;
-use Symfony\Component\HttpKernel\KernelInterface;
 
 /**
  * Iterates over bundles, and uses the extension_locator to store the list of extra legacy extensions in the
@@ -16,14 +15,6 @@ use Symfony\Component\HttpKernel\KernelInterface;
  */
 class LegacyBundlesPass implements CompilerPassInterface
 {
-    /** @var \Symfony\Component\HttpKernel\KernelInterface */
-    private $kernel;
-
-    public function __construct(KernelInterface $kernel)
-    {
-        $this->kernel = $kernel;
-    }
-
     public function process(ContainerBuilder $container)
     {
         if (!$container->has('ezpublish_legacy.legacy_bundles.extension_locator')) {
@@ -33,8 +24,8 @@ class LegacyBundlesPass implements CompilerPassInterface
         $locator = $container->get('ezpublish_legacy.legacy_bundles.extension_locator');
 
         $extensionNames = [];
-        foreach ($this->kernel->getBundles() as $bundle) {
-            $extensionNames += array_flip($locator->getExtensionNames($bundle));
+        foreach ($container->getParameter('kernel.bundles') as $bundle) {
+            $extensionNames += array_flip($locator->getExtensionNames(new $bundle()));
         }
 
         $container->setParameter('ezpublish_legacy.legacy_bundles_extensions', array_keys($extensionNames));
