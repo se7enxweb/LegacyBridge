@@ -67,7 +67,7 @@ class LegacyConfigResolver implements ConfigResolverInterface
      *
      * @return mixed
      */
-    public function getParameter($paramName, $namespace = null, $scope = null)
+    public function getParameter(string $paramName, ?string $namespace = null, ?string $scope = null)
     {
         if (!$this->isValidParameterName($paramName)) {
             throw new ParameterNotFoundException($paramName, "$namespace.ini");
@@ -140,7 +140,7 @@ class LegacyConfigResolver implements ConfigResolverInterface
      *
      * @return bool
      */
-    public function hasParameter($paramName, $namespace = null, $scope = null)
+    public function hasParameter(string $paramName, ?string $namespace = null, ?string $scope = null): bool
     {
         // $paramName must have a '.' as it separates INI section and actual parameter name.
         // e.g. DebugSettings.DebugOutput
@@ -172,7 +172,7 @@ class LegacyConfigResolver implements ConfigResolverInterface
      *
      * @param string $defaultNamespace
      */
-    public function setDefaultNamespace($defaultNamespace)
+    public function setDefaultNamespace(string $defaultNamespace): void
     {
         $this->defaultNamespace = $defaultNamespace;
     }
@@ -182,7 +182,7 @@ class LegacyConfigResolver implements ConfigResolverInterface
      *
      * @return string
      */
-    public function getDefaultNamespace()
+    public function getDefaultNamespace(): string
     {
         return $this->defaultNamespace;
     }
