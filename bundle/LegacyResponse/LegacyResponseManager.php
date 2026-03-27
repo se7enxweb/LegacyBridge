@@ -13,7 +13,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
 use eZ\Bundle\EzPublishLegacyBundle\Exception\NotFoundHttpException;
 use Symfony\Component\Security\Core\Exception\AccessDeniedException;
-use Symfony\Component\Templating\EngineInterface;
+use Twig\Environment;
 use DateTime;
 use ezpKernelResult;
 use ezpKernelRedirect;
@@ -24,7 +24,7 @@ use ezpKernelRedirect;
 class LegacyResponseManager
 {
     /**
-     * @var \Symfony\Component\Templating\EngineInterface
+    * @var \Twig\Environment
      */
     private $templateEngine;
 
@@ -49,7 +49,7 @@ class LegacyResponseManager
      */
     private $requestStack;
 
-    public function __construct(EngineInterface $templateEngine, ConfigResolverInterface $configResolver, RequestStack $requestStack)
+    public function __construct(Environment $templateEngine, ConfigResolverInterface $configResolver, RequestStack $requestStack)
     {
         $this->templateEngine = $templateEngine;
         $this->legacyLayout = $configResolver->getParameter('module_default_layout', 'ezpublish_legacy');

@@ -78,7 +78,7 @@ services:
     ezpublish_legacy.response_manager:
         class: eZ\Bundle\EzPublishLegacyBundle\LegacyResponse\LegacyResponseManager
         public: false
-        arguments: ["@templating", "@ezpublish.config.resolver", "@request_stack"]
+        arguments: ["@twig", "@ezpublish.config.resolver", "@request_stack"]
 
     ezpublish_legacy.controller:
         class: eZ\Bundle\EzPublishLegacyBundle\Controller\LegacyKernelController
