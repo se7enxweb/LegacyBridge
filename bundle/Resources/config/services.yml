@@ -202,7 +202,7 @@ services:
             - "@ezpublish_legacy.switchable_http_cache_purger"
             - "@ezpublish_legacy.persistence_cache_purger"
             - "@ezpublish.urlalias_generator"
-            - "@ezpublish.api.storage_engine.legacy.dbhandler"
+            - "@ezpublish.api.storage_engine.legacy.connection"
             - "@ezpublish_legacy.image_alias.cleaner"
             - "%ezpublish_legacy.configuration_mapper.options%"
         calls:

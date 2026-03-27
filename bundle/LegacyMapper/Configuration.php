@@ -13,7 +13,7 @@ use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use EzSystems\PlatformHttpCacheBundle\PurgeClient\PurgeClientInterface;
 use eZ\Bundle\EzPublishLegacyBundle\Cache\PersistenceCachePurger;
 use eZ\Publish\Core\MVC\Symfony\Routing\Generator\UrlAliasGenerator;
-use eZ\Publish\Core\Persistence\Database\DatabaseHandler;
+use Doctrine\DBAL\Connection;
 use ezpEvent;
 use ezxFormToken;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
@@ -49,7 +49,7 @@ class Configuration implements EventSubscriberInterface
     private $urlAliasGenerator;
 
     /**
-     * @var \eZ\Publish\Core\Persistence\Database\DatabaseHandler
+    * @var \Doctrine\DBAL\Connection
      */
     private $legacyDbHandler;
 
@@ -75,7 +75,7 @@ class Configuration implements EventSubscriberInterface
         PurgeClientInterface $purgeClient,
         PersistenceCachePurger $persistenceCachePurger,
         UrlAliasGenerator $urlAliasGenerator,
-        DatabaseHandler $legacyDbHandler,
+        Connection $legacyDbHandler,
         AliasCleanerInterface $aliasCleaner,
         array $options = []
     ) {
@@ -116,7 +116,7 @@ class Configuration implements EventSubscriberInterface
             return;
         }
 
-        $databaseSettings = $this->legacyDbHandler->getConnection()->getParams();
+        $databaseSettings = $this->legacyDbHandler->getParams();
         $settings = [];
         foreach (
             [
