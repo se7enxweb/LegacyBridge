@@ -6,7 +6,6 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\Templating\Twig;
 
-use Twig\Loader\ExistsLoaderInterface;
 use Twig\Loader\LoaderInterface;
 use Twig\Source;
 
@@ -15,7 +14,7 @@ use Twig\Source;
  *
  * {@inheritdoc}
  */
-class LoaderString implements LoaderInterface, ExistsLoaderInterface
+class LoaderString implements LoaderInterface
 {
     /**
      * {@inheritdoc}
@@ -28,7 +27,7 @@ class LoaderString implements LoaderInterface, ExistsLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSourceContext($name)
+    public function getSourceContext(string $name): Source
     {
         return new Source($name, $name);
     }
@@ -36,7 +35,7 @@ class LoaderString implements LoaderInterface, ExistsLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getCacheKey($name)
+    public function getCacheKey(string $name): string
     {
         return $name;
     }
@@ -44,7 +43,7 @@ class LoaderString implements LoaderInterface, ExistsLoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function isFresh($name, $time)
+    public function isFresh(string $name, int $time): bool
     {
         return true;
     }
@@ -56,7 +55,7 @@ class LoaderString implements LoaderInterface, ExistsLoaderInterface
      *
      * @return bool
      */
-    public function exists($name)
+    public function exists(string $name)
     {
         $suffix = '.twig';
         $endsWithSuffix = strtolower(substr($name, -\strlen($suffix))) === $suffix;
