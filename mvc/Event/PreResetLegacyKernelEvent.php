@@ -7,7 +7,7 @@
 namespace eZ\Publish\Core\MVC\Legacy\Event;
 
 use eZ\Publish\Core\MVC\Legacy\Kernel as LegacyKernel;
-use Symfony\Component\EventDispatcher\Event;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * This event is triggered right before the initialization of the legacy kernel.

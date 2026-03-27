@@ -6,9 +6,9 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\Event;
 
-use Symfony\Component\EventDispatcher\Event;
 use eZ\Publish\Core\MVC\Legacy\Kernel as LegacyKernel;
 use ezpKernelHandler;
+use Symfony\Contracts\EventDispatcher\Event;
 
 /**
  * This event is sent just after the LegacyKernel has been built.
