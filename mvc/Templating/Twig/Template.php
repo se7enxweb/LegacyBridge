@@ -6,14 +6,15 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\Templating\Twig;
 
-use Twig_Environment;
-use Twig_Template;
 use eZ\Publish\Core\MVC\Legacy\Templating\LegacyEngine;
+use Twig\Environment;
+use Twig\Source;
+use Twig\Template as BaseTemplate;
 
 /**
  * Twig Template class representation for a legacy template.
  */
-class Template extends Twig_Template
+class Template extends BaseTemplate
 {
     private $templateName;
 
@@ -22,7 +23,7 @@ class Template extends Twig_Template
      */
     private $legacyEngine;
 
-    public function __construct($templateName, Twig_Environment $env, LegacyEngine $legacyEngine)
+    public function __construct(string $templateName, Environment $env, LegacyEngine $legacyEngine)
     {
         parent::__construct($env);
 
@@ -37,7 +38,7 @@ class Template extends Twig_Template
      *
      * @return string The rendered template
      */
-    public function render(array $context)
+    public function render(array $context): string
     {
         return $this->legacyEngine->render($this->templateName, $context);
     }
@@ -48,7 +49,7 @@ class Template extends Twig_Template
      * @param array $context An array of parameters to pass to the template
      * @param array $blocks  An array of blocks to pass to the template
      */
-    public function display(array $context, array $blocks = [])
+    public function display(array $context, array $blocks = []): void
     {
         echo $this->render($context);
     }
@@ -56,7 +57,7 @@ class Template extends Twig_Template
     /**
      * @return string
      */
-    public function getTemplateName()
+    public function getTemplateName(): string
     {
         return $this->templateName;
     }
@@ -64,7 +65,7 @@ class Template extends Twig_Template
     /**
      * {@inheritdoc}
      */
-    public function getDebugInfo()
+    public function getDebugInfo(): array
     {
         return [];
     }
@@ -72,15 +73,16 @@ class Template extends Twig_Template
     /**
      * {@inheritdoc}
      */
-    public function getSource()
+    public function getSourceContext(): Source
     {
-        return '';
+        return new Source('', $this->templateName);
     }
 
     /**
      * {@inheritdoc}
      */
-    protected function doDisplay(array $context, array $blocks = [])
+    protected function doDisplay(array $context, array $blocks = []): iterable
     {
+        return [];
     }
 }

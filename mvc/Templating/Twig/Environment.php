@@ -6,11 +6,12 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\Templating\Twig;
 
-use Twig_Environment;
-use Twig_Error_Loader;
 use eZ\Publish\Core\MVC\Legacy\Templating\LegacyEngine;
+use Twig\Environment as BaseEnvironment;
+use Twig\Error\LoaderError;
+use Twig\Template as BaseTemplate;
 
-class Environment extends Twig_Environment
+class Environment extends BaseEnvironment
 {
     /**
      * @var \eZ\Publish\Core\MVC\Legacy\Templating\LegacyEngine
@@ -29,7 +30,7 @@ class Environment extends Twig_Environment
         $this->legacyEngine = $legacyEngine;
     }
 
-    public function loadTemplate($name, $index = null)
+    public function loadTemplate(string $cls, string $name, ?int $index = null): BaseTemplate
     {
         // If legacy engine supports given template, delegate it.
         if (\is_string($name) && isset($this->legacyTemplatesCache[$name])) {
@@ -38,7 +39,7 @@ class Environment extends Twig_Environment
 
         if (\is_string($name) && $this->legacyEngine !== null && $this->legacyEngine->supports($name)) {
             if (!$this->legacyEngine->exists($name)) {
-                throw new Twig_Error_Loader("Unable to find the template \"$name\"");
+                throw new LoaderError("Unable to find the template \"$name\"");
             }
 
             $this->legacyTemplatesCache[$name] = new Template($name, $this, $this->legacyEngine);
@@ -46,6 +47,6 @@ class Environment extends Twig_Environment
             return $this->legacyTemplatesCache[$name];
         }
 
-        return parent::loadTemplate($name, $index);
+        return parent::loadTemplate($cls, $name, $index);
     }
 }

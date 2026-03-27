@@ -7,7 +7,7 @@
 namespace eZ\Publish\Core\MVC\Legacy\Templating\Twig\Extension;
 
 use eZ\Publish\Core\MVC\Legacy\Templating\LegacyHelper;
-use Twig_Environment;
+use Twig\Environment;
 
 /**
  * Twig extension for eZ Publish legacy.
@@ -32,12 +32,12 @@ class LegacyRuntime
     /**
      * The Twig environment.
      *
-     * @var \Twig_Environment
+      * @var \Twig\Environment
      */
     private $environment;
 
     public function __construct(
-        Twig_Environment $environment,
+          Environment $environment,
         LegacyHelper $legacyHelper,
         $jsTemplate,
         $cssTemplate
