@@ -9,6 +9,7 @@ namespace eZ\Bundle\EzPublishLegacyBundle\Collector;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\DataCollector\DataCollector;
+use Throwable;
 
 /**
  * Collects list of used legacy templates.
@@ -25,7 +26,7 @@ class LegacyTemplatesCollector extends DataCollector
         $this->legacyKernel = $legacyKernel;
     }
 
-    public function collect(Request $request, Response $response, \Exception $exception = null)
+    public function collect(Request $request, Response $response, ?Throwable $exception = null): void
     {
         $this->data = ['legacyTemplates' => TemplateDebugInfo::getLegacyTemplatesList($this->legacyKernel)];
     }
