@@ -70,6 +70,7 @@ services:
         class: eZ\Publish\Core\MVC\Legacy\Kernel\CLIHandler
         public: true
         factory: ["@ezpublish_legacy.kernel.lazy_loader", buildLegacyKernelHandlerCLI]
+        arguments: ["@?ezpublish.siteaccess"]
 
     ezpublish_legacy.kernel_handler:
         class: Closure

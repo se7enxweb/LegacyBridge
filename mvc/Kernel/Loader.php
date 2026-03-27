@@ -235,16 +235,18 @@ class Loader
     /**
      * Builds legacy kernel handler CLI.
      *
-     * @return CLIHandler
+        * @param \eZ\Publish\Core\MVC\Symfony\SiteAccess|null $siteAccess
+        *
+        * @return \Closure
      */
-    public function buildLegacyKernelHandlerCLI()
+    public function buildLegacyKernelHandlerCLI($siteAccess = null)
     {
         $legacyRootDir = $this->legacyRootDir;
         $eventDispatcher = $this->eventDispatcher;
         $container = $this->container;
         $that = $this;
 
-        return static function () use ($legacyRootDir, $container, $eventDispatcher, $that) {
+        return static function () use ($legacyRootDir, $container, $eventDispatcher, $that, $siteAccess) {
             if (!$that->getCLIHandler()) {
                 $currentDir = getcwd();
                 chdir($legacyRootDir);
@@ -255,7 +257,7 @@ class Loader
                 }
 
                 $that->setCLIHandler(
-                    new CLIHandler($legacyParameters->all(), $container->get('ezpublish.siteaccess'), $container)
+                    new CLIHandler($legacyParameters->all(), $siteAccess, $container)
                 );
 
                 chdir($currentDir);
