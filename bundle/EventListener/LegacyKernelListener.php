@@ -70,7 +70,6 @@ class LegacyKernelListener implements EventSubscriberInterface
     private function resetKernelHandler()
     {
         $legacyHandlerCLI = $this->container->get('ezpublish_legacy.kernel_handler.cli');
-        $this->container->set('ezpublish_legacy.kernel.lazy', null);
         $this->container->set('ezpublish_legacy.kernel_handler', $legacyHandlerCLI);
         $this->container->set('ezpublish_legacy.kernel_handler.web', $legacyHandlerCLI);
     }
