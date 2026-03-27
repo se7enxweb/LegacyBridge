@@ -7,8 +7,7 @@
 namespace eZ\Publish\Core\MVC\Legacy\Security\Firewall;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
-use Symfony\Component\HttpKernel\HttpKernelInterface;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Security\Http\Event\InteractiveLoginEvent;
 use Symfony\Component\Security\Http\SecurityEvents;
@@ -42,11 +41,11 @@ class LoginCleanupListener implements EventSubscriberInterface
     /**
      * Removes is_logged_in cookie if needed.
      *
-     * @param FilterResponseEvent $e
+     * @param ResponseEvent $e
      */
-    public function onFilterResponse(FilterResponseEvent $e)
+    public function onFilterResponse(ResponseEvent $e)
     {
-        if ($e->getRequestType() !== HttpKernelInterface::MASTER_REQUEST) {
+        if (!$e->isMainRequest()) {
             return;
         }
 
