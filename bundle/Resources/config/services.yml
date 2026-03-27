@@ -198,7 +198,7 @@ services:
         class: eZ\Bundle\EzPublishLegacyBundle\LegacyMapper\Configuration
         public: false
         arguments:
-            - "@ezpublish.config.resolver.core"
+            - "@ezpublish.config.resolver"
             - "@ezpublish_legacy.switchable_http_cache_purger"
             - "@ezpublish_legacy.persistence_cache_purger"
             - "@ezpublish.urlalias_generator"
@@ -214,7 +214,7 @@ services:
         class: eZ\Bundle\EzPublishLegacyBundle\LegacyMapper\LegacyBundles
         public: false
         arguments:
-            - "@ezpublish.config.resolver.core"
+            - "@ezpublish.config.resolver"
             - { extensions: "%ezpublish_legacy.legacy_bundles_extensions%" }
         tags:
             - { name: kernel.event_subscriber }

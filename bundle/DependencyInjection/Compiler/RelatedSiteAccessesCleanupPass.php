@@ -16,7 +16,7 @@ class RelatedSiteAccessesCleanupPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $configResolver = $container->get('ezpublish.config.resolver.core');
+        $configResolver = $container->get('ezpublish.config.resolver');
         $relationMap = $container->getParameter('ezpublish.siteaccess.relation_map');
 
         // Exclude siteaccesses in legacy_mode (e.g. admin interface)

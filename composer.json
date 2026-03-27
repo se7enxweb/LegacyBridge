@@ -1,7 +1,7 @@
 {
     "name": "se7enxweb/legacy-bridge",
     "description": "eZ Platform 3.x bridge to eZ Publish Legacy — PHP 8.x compatible",
-    "license": "GPL-2.0",
+    "license": "GPL-2.0-or-later",
     "type": "ezplatform-bundle",
     "authors": [
         {
