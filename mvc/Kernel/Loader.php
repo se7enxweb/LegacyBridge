@@ -18,9 +18,9 @@ use ezpKernelRest;
 use ezpKernelTreeMenu;
 use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Psr\Log\LoggerInterface;
-use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
 /**
  * Legacy kernel loader.
@@ -40,7 +40,7 @@ class Loader
     protected $webrootDir;
 
     /**
-     * @var \Symfony\Component\EventDispatcher\EventDispatcherInterface
+    * @var \Symfony\Contracts\EventDispatcher\EventDispatcherInterface
      */
     protected $eventDispatcher;
 
@@ -133,8 +133,8 @@ class Loader
 
             if ($that->getBuildEventsEnabled()) {
                 $eventDispatcher->dispatch(
-                    LegacyEvents::POST_BUILD_LEGACY_KERNEL,
-                    new PostBuildKernelEvent($legacyKernel, $legacyKernelHandler)
+                    new PostBuildKernelEvent($legacyKernel, $legacyKernelHandler),
+                    LegacyEvents::POST_BUILD_LEGACY_KERNEL
                 );
             }
 
@@ -169,12 +169,12 @@ class Loader
 
                 if ($that->getBuildEventsEnabled()) {
                     // PRE_BUILD_LEGACY_KERNEL for non request related stuff
-                    $eventDispatcher->dispatch(LegacyEvents::PRE_BUILD_LEGACY_KERNEL, new PreBuildKernelEvent($legacyParameters));
+                    $eventDispatcher->dispatch(new PreBuildKernelEvent($legacyParameters), LegacyEvents::PRE_BUILD_LEGACY_KERNEL);
 
                     // Pure web stuff
                     $eventDispatcher->dispatch(
-                        LegacyEvents::PRE_BUILD_LEGACY_KERNEL_WEB,
-                        new PreBuildKernelWebHandlerEvent($legacyParameters, $request)
+                        new PreBuildKernelWebHandlerEvent($legacyParameters, $request),
+                        LegacyEvents::PRE_BUILD_LEGACY_KERNEL_WEB
                     );
                 }
 
@@ -228,7 +228,7 @@ class Loader
 
                 $legacyParameters = new ParameterBag($container->getParameter('ezpublish_legacy.kernel_handler.cli.options'));
                 if ($that->getBuildEventsEnabled()) {
-                    $eventDispatcher->dispatch(LegacyEvents::PRE_BUILD_LEGACY_KERNEL, new PreBuildKernelEvent($legacyParameters));
+                    $eventDispatcher->dispatch(new PreBuildKernelEvent($legacyParameters), LegacyEvents::PRE_BUILD_LEGACY_KERNEL);
                 }
 
                 $that->setCLIHandler(
@@ -294,12 +294,12 @@ class Loader
 
                 if ($that->getBuildEventsEnabled()) {
                     // PRE_BUILD_LEGACY_KERNEL for non request related stuff
-                    $eventDispatcher->dispatch(LegacyEvents::PRE_BUILD_LEGACY_KERNEL, new PreBuildKernelEvent($legacyParameters));
+                    $eventDispatcher->dispatch(new PreBuildKernelEvent($legacyParameters), LegacyEvents::PRE_BUILD_LEGACY_KERNEL);
 
                     // Pure web stuff
                     $eventDispatcher->dispatch(
-                        LegacyEvents::PRE_BUILD_LEGACY_KERNEL_WEB,
-                        new PreBuildKernelWebHandlerEvent($legacyParameters, $request)
+                        new PreBuildKernelWebHandlerEvent($legacyParameters, $request),
+                        LegacyEvents::PRE_BUILD_LEGACY_KERNEL_WEB
                     );
                 }
 
@@ -334,8 +334,8 @@ class Loader
             /** @var \Closure $kernelClosure */
             $kernelClosure = $this->container->get('ezpublish_legacy.kernel');
             $this->eventDispatcher->dispatch(
-                LegacyEvents::PRE_RESET_LEGACY_KERNEL,
-                new PreResetLegacyKernelEvent($kernelClosure())
+                new PreResetLegacyKernelEvent($kernelClosure()),
+                LegacyEvents::PRE_RESET_LEGACY_KERNEL
             );
         }
 
