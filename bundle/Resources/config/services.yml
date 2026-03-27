@@ -72,8 +72,9 @@ services:
         factory: ["@ezpublish_legacy.kernel.lazy_loader", buildLegacyKernelHandlerCLI]
 
     ezpublish_legacy.kernel_handler:
-        alias: ezpublish_legacy.kernel_handler.web
+        class: Closure
         public: true
+        factory: ["@ezpublish_legacy.kernel.lazy_loader", buildLegacyKernelHandler]
 
     ezpublish_legacy.response_manager:
         class: eZ\Bundle\EzPublishLegacyBundle\LegacyResponse\LegacyResponseManager

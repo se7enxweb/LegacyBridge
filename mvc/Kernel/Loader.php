@@ -143,6 +143,29 @@ class Loader
     }
 
     /**
+     * Builds the default legacy kernel handler and selects CLI when no HTTP request exists.
+     *
+     * @return \Closure
+     */
+    public function buildLegacyKernelHandler()
+    {
+        $container = $this->container;
+        $requestStack = $this->requestStack;
+
+        return static function () use ($container, $requestStack) {
+            if (null === $requestStack->getCurrentRequest()) {
+                $legacyHandler = $container->get('ezpublish_legacy.kernel_handler.cli');
+
+                return $legacyHandler instanceof \Closure ? $legacyHandler() : $legacyHandler;
+            }
+
+            $legacyHandler = $container->get('ezpublish_legacy.kernel_handler.web');
+
+            return $legacyHandler instanceof \Closure ? $legacyHandler() : $legacyHandler;
+        };
+    }
+
+    /**
      * Builds up the legacy kernel web handler and encapsulates it inside a closure, allowing lazy loading.
      *
      * @param string $webHandlerClass The legacy kernel handler class to use
