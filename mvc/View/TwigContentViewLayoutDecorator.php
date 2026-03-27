@@ -12,7 +12,7 @@ use eZ\Publish\Core\MVC\Symfony\View\ContentView;
 use eZ\Publish\Core\Base\Exceptions\InvalidArgumentType;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\HttpKernel\Controller\ControllerReference;
-use Twig_Environment;
+use Twig\Environment;
 
 class TwigContentViewLayoutDecorator implements View
 {
@@ -22,7 +22,7 @@ class TwigContentViewLayoutDecorator implements View
     protected $contentView;
 
     /**
-     * @var \Twig_Environment
+    * @var \Twig\Environment
      */
     protected $twig;
 
@@ -56,7 +56,7 @@ class TwigContentViewLayoutDecorator implements View
      */
     protected $response;
 
-    public function __construct(Twig_Environment $twig, array $options, ConfigResolverInterface $configResolver)
+    public function __construct(Environment $twig, array $options, ConfigResolverInterface $configResolver)
     {
         $this->twig = $twig;
         $this->options = $options + ['contentBlockName' => 'content'];
