@@ -276,7 +276,7 @@ services:
         arguments:
             - "@filesystem"
             - "%ezpublish_legacy.setup_wizard.configuration_dumper.environments%"
-            - "%kernel.project_dir%/%kernel.name%"
+            - "%kernel.project_dir%"
             - "%kernel.cache_dir%"
 
     # Image alias generator using legacy
