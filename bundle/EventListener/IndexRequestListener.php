@@ -7,7 +7,7 @@
 namespace eZ\Bundle\EzPublishLegacyBundle\EventListener;
 
 use eZ\Bundle\EzPublishCoreBundle\EventListener\IndexRequestListener as CoreIndexListener;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class IndexRequestListener extends CoreIndexListener
 {
@@ -15,9 +15,9 @@ class IndexRequestListener extends CoreIndexListener
      * Overrides core index request, which checks if the IndexPage is configured and which page must be shown.
      * If matched SiteAccess uses legacy mode, do not execute event.
      *
-     * @param GetResponseEvent $event
+     * @param RequestEvent $event
      */
-    public function onKernelRequestIndex(GetResponseEvent $event)
+    public function onKernelRequestIndex(RequestEvent $event)
     {
         if ($this->configResolver->getParameter('legacy_mode')) {
             return;

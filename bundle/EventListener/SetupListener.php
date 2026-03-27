@@ -8,7 +8,7 @@ namespace eZ\Bundle\EzPublishLegacyBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\RedirectResponse;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RouterInterface;
@@ -43,9 +43,9 @@ class SetupListener implements EventSubscriberInterface
     /**
      * Checks if it's needed to redirect to setup wizard.
      *
-     * @param \Symfony\Component\HttpKernel\Event\GetResponseEvent $event
+     * @param \Symfony\Component\HttpKernel\Event\RequestEvent $event
      */
-    public function onKernelRequestSetup(GetResponseEvent $event)
+    public function onKernelRequestSetup(RequestEvent $event)
     {
         if ($event->getRequestType() == HttpKernelInterface::MASTER_REQUEST) {
             if ($this->defaultSiteAccess !== 'setup') {

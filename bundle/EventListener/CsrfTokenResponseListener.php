@@ -9,7 +9,7 @@ namespace eZ\Bundle\EzPublishLegacyBundle\EventListener;
 use eZ\Bundle\EzPublishLegacyBundle\LegacyResponse;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Response;
-use Symfony\Component\HttpKernel\Event\FilterResponseEvent;
+use Symfony\Component\HttpKernel\Event\ResponseEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use ezxFormToken;
 
@@ -32,9 +32,9 @@ class CsrfTokenResponseListener implements EventSubscriberInterface
     }
 
     /**
-     * @param \Symfony\Component\HttpKernel\Event\FilterResponseEvent $event
+     * @param \Symfony\Component\HttpKernel\Event\ResponseEvent $event
      */
-    public function onKernelResponse(FilterResponseEvent $event)
+    public function onKernelResponse(ResponseEvent $event)
     {
         $response = $event->getResponse();
         if (!$this->isLegacyResponse($response)) {

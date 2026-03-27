@@ -10,7 +10,7 @@ use eZ\Bundle\EzPublishLegacyBundle\EventListener\SetupListener;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\RouterInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\Routing\RequestContext;
@@ -99,11 +99,11 @@ class SetupListenerTest extends TestCase
     /**
      * @param string $uri
      *
-     * @return \Symfony\Component\HttpKernel\Event\GetResponseEvent
+     * @return \Symfony\Component\HttpKernel\Event\RequestEvent
      */
     private function createEvent($uri = null, $requestType = HttpKernelInterface::MASTER_REQUEST)
     {
-        return new GetResponseEvent(
+        return new RequestEvent(
             $this->createMock(HttpKernelInterface::class),
             $uri !== null ? Request::create($uri) : new Request(),
             $requestType

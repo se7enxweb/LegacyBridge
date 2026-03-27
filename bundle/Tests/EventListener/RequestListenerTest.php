@@ -13,7 +13,7 @@ use eZ\Publish\API\Repository\Values\User\User;
 use eZ\Bundle\EzPublishLegacyBundle\EventListener\RequestListener;
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use eZ\Publish\Core\MVC\Symfony\Security\User as CoreUser;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
@@ -114,7 +114,7 @@ class RequestListenerTest extends TestCase
             ->method('setUser')
             ->with($this->isInstanceOf(CoreUser::class));
 
-        $event = new GetResponseEvent(
+        $event = new RequestEvent(
             $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MASTER_REQUEST
