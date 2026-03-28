@@ -6,16 +6,43 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Command;
 
+use eZ\Bundle\EzPublishLegacyBundle\LegacyBundles\LegacyExtensionsLocator;
 use RuntimeException;
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-class LegacyBundleInstallCommand extends ContainerAwareCommand
+class LegacyBundleInstallCommand extends Command
 {
+    /** @var LegacyExtensionsLocator */
+    private $legacyExtensionsLocator;
+
+    /** @var KernelInterface */
+    private $kernel;
+
+    /** @var Filesystem */
+    private $filesystem;
+
+    /** @var string */
+    private $legacyRootDir;
+
+    public function __construct(
+        LegacyExtensionsLocator $legacyExtensionsLocator,
+        KernelInterface $kernel,
+        Filesystem $filesystem,
+        string $legacyRootDir
+    ) {
+        parent::__construct();
+        $this->legacyExtensionsLocator = $legacyExtensionsLocator;
+        $this->kernel = $kernel;
+        $this->filesystem = $filesystem;
+        $this->legacyRootDir = $legacyRootDir;
+    }
     protected function configure()
     {
         $this
@@ -40,10 +67,8 @@ EOT
             'force' => (bool)$input->getOption('force'),
         ];
 
-        $legacyExtensionsLocator = $this->getContainer()->get('ezpublish_legacy.legacy_bundles.extension_locator');
-        $kernel = $this->getContainer()->get('kernel');
-        foreach ($kernel->getBundles() as $bundle) {
-            foreach ($legacyExtensionsLocator->getExtensionDirectories($bundle->getPath()) as $extensionDir) {
+        foreach ($this->kernel->getBundles() as $bundle) {
+            foreach ($this->legacyExtensionsLocator->getExtensionDirectories($bundle->getPath()) as $extensionDir) {
                 $output->writeln('- ' . $this->removeCwd($extensionDir));
                 try {
                     $target = $this->linkLegacyExtension($extensionDir, $options, $output);
@@ -69,8 +94,8 @@ EOT
     protected function linkLegacyExtension($extensionPath, array $options = [], OutputInterface $output)
     {
         $options += ['force' => false, 'copy' => false, 'relative' => false];
-        $filesystem = $this->getContainer()->get('filesystem');
-        $legacyRootDir = rtrim($this->getContainer()->getParameter('ezpublish_legacy.root_dir'), '/');
+        $filesystem = $this->filesystem;
+        $legacyRootDir = rtrim($this->legacyRootDir, '/');
 
         $relativeExtensionPath = $filesystem->makePathRelative($extensionPath, realpath("$legacyRootDir/extension/"));
         $targetPath = "$legacyRootDir/extension/" . basename($extensionPath);

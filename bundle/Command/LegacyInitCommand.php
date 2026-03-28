@@ -6,15 +6,24 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Output\ConsoleOutputInterface;
+use Symfony\Component\Filesystem\Filesystem;
 
-class LegacyInitCommand extends ContainerAwareCommand
+class LegacyInitCommand extends Command
 {
+    /** @var Filesystem */
+    private $filesystem;
+
+    public function __construct(Filesystem $filesystem)
+    {
+        parent::__construct();
+        $this->filesystem = $filesystem;
+    }
     protected function configure()
     {
         $this
@@ -78,7 +87,7 @@ EOT
         /**
          * @var \Symfony\Component\Filesystem\Filesystem
          */
-        $filesystem = $this->getContainer()->get('filesystem');
+        $filesystem = $this->filesystem;
 
         $filesystem->mkdir([
             'src/AppBundle/ezpublish_legacy',
@@ -254,7 +263,7 @@ EOT
         /**
          * @var \Symfony\Component\Filesystem\Filesystem
          */
-        $filesystem = $this->getContainer()->get('filesystem');
+        $filesystem = $this->filesystem;
         $srcArg = rtrim($input->getArgument('src'), '/');
         $filesystem->mirror(
             __DIR__ . '/../Resources/init_ini',

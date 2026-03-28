@@ -6,7 +6,7 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
@@ -15,8 +15,20 @@ use Symfony\Component\Filesystem\Exception\IOException;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 
-class LegacySrcSymlinkCommand extends ContainerAwareCommand
+class LegacySrcSymlinkCommand extends Command
 {
+    /** @var Filesystem */
+    private $filesystem;
+
+    /** @var string */
+    private $legacyRootDir;
+
+    public function __construct(Filesystem $filesystem, string $legacyRootDir)
+    {
+        parent::__construct();
+        $this->filesystem = $filesystem;
+        $this->legacyRootDir = $legacyRootDir;
+    }
     protected function configure()
     {
         $this
@@ -51,10 +63,7 @@ EOT
         $create = (bool)$input->getOption('create');
         $force = (bool)$input->getOption('force');
 
-        /**
-         * @var \Symfony\Component\Filesystem\Filesystem
-         */
-        $filesystem = $this->getContainer()->get('filesystem');
+        $filesystem = $this->filesystem;
 
         if (!$filesystem->exists($srcArg)) {
             if (!$create) {
@@ -117,7 +126,7 @@ EOT
     protected function linkSrcFolders(Filesystem $filesystem, $srcArg, $force, OutputInterface $output)
     {
         $symlinks = [];
-        $legacyRootDir = rtrim($this->getContainer()->getParameter('ezpublish_legacy.root_dir'), '/');
+        $legacyRootDir = rtrim($this->legacyRootDir, '/');
         $relative = true;
 
         // first handle override folder if it exists

@@ -6,15 +6,43 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use eZ\Bundle\EzPublishLegacyBundle\SetupWizard\ConfigurationConverter;
+use eZ\Bundle\EzPublishLegacyBundle\SetupWizard\ConfigurationDumper;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use eZ\Publish\Core\MVC\Symfony\ConfigDumperInterface;
+use eZ\Publish\Core\MVC\Legacy\Kernel\Loader;
+use Symfony\Component\HttpKernel\KernelInterface;
 
-class LegacyConfigurationCommand extends ContainerAwareCommand
+class LegacyConfigurationCommand extends Command
 {
+    /** @var Loader */
+    private $legacyKernelLoader;
+
+    /** @var KernelInterface */
+    private $kernel;
+
+    /** @var ConfigurationConverter */
+    private $configurationConverter;
+
+    /** @var ConfigurationDumper */
+    private $configurationDumper;
+
+    public function __construct(
+        Loader $legacyKernelLoader,
+        KernelInterface $kernel,
+        ConfigurationConverter $configurationConverter,
+        ConfigurationDumper $configurationDumper
+    ) {
+        parent::__construct();
+        $this->legacyKernelLoader = $legacyKernelLoader;
+        $this->kernel = $kernel;
+        $this->configurationConverter = $configurationConverter;
+        $this->configurationDumper = $configurationDumper;
+    }
     protected function configure()
     {
         $this
@@ -41,13 +69,13 @@ EOT
     {
         $package = $input->getArgument('package');
         $adminSiteaccess = $input->getArgument('adminsiteaccess');
-        $this->getContainer()->get('ezpublish_legacy.kernel.lazy_loader')->setBuildEventsEnabled(false);
-        $kernel = $this->getContainer()->get('kernel');
+        $this->legacyKernelLoader->setBuildEventsEnabled(false);
+        $kernel = $this->kernel;
 
         /** @var $configurationConverter \eZ\Bundle\EzPublishLegacyBundle\SetupWizard\ConfigurationConverter */
-        $configurationConverter = $this->getContainer()->get('ezpublish_legacy.setup_wizard.configuration_converter');
+        $configurationConverter = $this->configurationConverter;
         /** @var $configurationDumper \eZ\Bundle\EzpublishLegacyBundle\SetupWizard\ConfigurationDumper */
-        $configurationDumper = $this->getContainer()->get('ezpublish_legacy.setup_wizard.configuration_dumper');
+        $configurationDumper = $this->configurationDumper;
         $configurationDumper->addEnvironment($kernel->getEnvironment());
 
         $options = ConfigDumperInterface::OPT_DEFAULT;

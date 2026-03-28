@@ -345,31 +345,39 @@ services:
             - { name: console.command }
 
     eZ\Bundle\EzPublishLegacyBundle\Command\LegacyBundleInstallCommand:
-        calls:
-            - [setContainer, ['@service_container']]
+        arguments:
+            - '@ezpublish_legacy.legacy_bundles.extension_locator'
+            - '@kernel'
+            - '@filesystem'
+            - '%ezpublish_legacy.root_dir%'
         tags:
             - { name: console.command }
 
     eZ\Bundle\EzPublishLegacyBundle\Command\LegacyConfigurationCommand:
-        calls:
-            - [setContainer, ['@service_container']]
+        arguments:
+            - '@ezpublish_legacy.kernel.lazy_loader'
+            - '@kernel'
+            - '@ezpublish_legacy.setup_wizard.configuration_converter'
+            - '@ezpublish_legacy.setup_wizard.configuration_dumper'
         tags:
             - { name: console.command }
 
     eZ\Bundle\EzPublishLegacyBundle\Command\LegacyInitCommand:
-        calls:
-            - [setContainer, ['@service_container']]
+        arguments:
+            - '@filesystem'
         tags:
             - { name: console.command }
 
     eZ\Bundle\EzPublishLegacyBundle\Command\LegacySrcSymlinkCommand:
-        calls:
-            - [setContainer, ['@service_container']]
+        arguments:
+            - '@filesystem'
+            - '%ezpublish_legacy.root_dir%'
         tags:
             - { name: console.command }
 
     eZ\Bundle\EzPublishLegacyBundle\Command\LegacyWrapperInstallCommand:
-        calls:
-            - [setContainer, ['@service_container']]
+        arguments:
+            - '@filesystem'
+            - '%ezpublish_legacy.root_dir%'
         tags:
             - { name: console.command }

@@ -6,19 +6,33 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Filesystem\Exception\IOException;
+use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\Finder\Finder;
 use FilesystemIterator;
 use RecursiveDirectoryIterator;
 use RecursiveIteratorIterator;
 
-class LegacyWrapperInstallCommand extends ContainerAwareCommand
+class LegacyWrapperInstallCommand extends Command
 {
+    /** @var Filesystem */
+    private $filesystem;
+
+    /** @var string */
+    private $legacyRootDir;
+
+    public function __construct(Filesystem $filesystem, string $legacyRootDir)
+    {
+        parent::__construct();
+        $this->filesystem = $filesystem;
+        $this->legacyRootDir = $legacyRootDir;
+    }
+
     protected function configure()
     {
         $this
@@ -50,11 +64,8 @@ EOT
             throw new \InvalidArgumentException(sprintf('The target directory "%s" does not exist.', $input->getArgument('target')));
         }
 
-        /**
-         * @var \Symfony\Component\Filesystem\Filesystem
-         */
-        $filesystem = $this->getContainer()->get('filesystem');
-        $legacyRootDir = rtrim($this->getContainer()->getParameter('ezpublish_legacy.root_dir'), '/');
+        $filesystem = $this->filesystem;
+        $legacyRootDir = rtrim($this->legacyRootDir, '/');
 
         $output->writeln(sprintf("Installing eZ Publish legacy assets from $legacyRootDir using the <comment>%s</comment> option", $input->getOption('symlink') ? 'symlink' : 'hard copy'));
         $symlink = $input->getOption('symlink');
