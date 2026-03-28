@@ -83,6 +83,6 @@ class Template extends BaseTemplate
      */
     protected function doDisplay(array $context, array $blocks = []): iterable
     {
-        return [];
+        yield $this->legacyEngine->render($this->templateName, $context);
     }
 }

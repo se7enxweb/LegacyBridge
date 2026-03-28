@@ -19,14 +19,6 @@ class LoaderString implements LoaderInterface
     /**
      * {@inheritdoc}
      */
-    public function getSource($name)
-    {
-        return $name;
-    }
-
-    /**
-     * {@inheritdoc}
-     */
     public function getSourceContext(string $name): Source
     {
         return new Source($name, $name);
