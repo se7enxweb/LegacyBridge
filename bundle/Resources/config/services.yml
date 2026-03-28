@@ -335,3 +335,41 @@ services:
             - "%ezpublish.siteaccess.default%"
         tags:
             - { name: kernel.event_subscriber }
+
+    # Console commands
+    eZ\Bundle\EzPublishLegacyBundle\Command\LegacyEmbedScriptCommand:
+        arguments:
+            - '@ezpublish_legacy.kernel_handler.cli'
+            - '@ezpublish_legacy.kernel'
+        tags:
+            - { name: console.command }
+
+    eZ\Bundle\EzPublishLegacyBundle\Command\LegacyBundleInstallCommand:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: console.command }
+
+    eZ\Bundle\EzPublishLegacyBundle\Command\LegacyConfigurationCommand:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: console.command }
+
+    eZ\Bundle\EzPublishLegacyBundle\Command\LegacyInitCommand:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: console.command }
+
+    eZ\Bundle\EzPublishLegacyBundle\Command\LegacySrcSymlinkCommand:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: console.command }
+
+    eZ\Bundle\EzPublishLegacyBundle\Command\LegacyWrapperInstallCommand:
+        calls:
+            - [setContainer, ['@service_container']]
+        tags:
+            - { name: console.command }

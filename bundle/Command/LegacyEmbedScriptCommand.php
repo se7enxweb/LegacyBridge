@@ -6,18 +6,26 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Command;
 
-use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand;
+use Symfony\Component\Console\Command\Command;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
 use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 
-class LegacyEmbedScriptCommand extends ContainerAwareCommand
+class LegacyEmbedScriptCommand extends Command
 {
-    /**
-     * @var \Symfony\Component\DependencyInjection\ContainerInterface
-     */
-    private $container;
+    /** @var \Closure */
+    private $legacyKernelHandlerCLI;
+
+    /** @var \Closure */
+    private $legacyKernel;
+
+    public function __construct(\Closure $legacyKernelHandlerCLI, \Closure $legacyKernel)
+    {
+        parent::__construct();
+        $this->legacyKernelHandlerCLI = $legacyKernelHandlerCLI;
+        $this->legacyKernel = $legacyKernel;
+    }
 
     protected function configure()
     {
@@ -39,7 +47,6 @@ EOT
 
     protected function execute(InputInterface $input, OutputInterface $output)
     {
-        $this->container = $this->getContainer();
         $legacyScript = $input->getArgument('script');
 
         // Cleanup the input arguments as the legacy kernel expects the script to run as first argument
@@ -65,10 +72,8 @@ EOT
 
         $output->writeln("<comment>Running script '$legacyScript' in eZ Publish legacy context</comment>");
 
-        /** @var $legacyCLIHandlerClosure \Closure */
-        $legacyCLIHandlerClosure = $this->container->get('ezpublish_legacy.kernel_handler.cli');
-        /** @var $legacyKernelClosure \Closure */
-        $legacyKernelClosure = $this->container->get('ezpublish_legacy.kernel');
+        $legacyCLIHandlerClosure = $this->legacyKernelHandlerCLI;
+        $legacyKernelClosure = $this->legacyKernel;
 
         // CLIHandler is contained in $legacyKernel, but we need to inject the script to run separately.
         $legacyCLIHandlerClosure()->setEmbeddedScriptPath($legacyScript);
