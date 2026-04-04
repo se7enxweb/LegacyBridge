@@ -290,7 +290,7 @@ services:
     ezpublish_legacy.rest_listener:
         class: eZ\Bundle\EzPublishLegacyBundle\EventListener\RestListener
         public: false
-        arguments: ["%ezpublish_rest.csrf_token_intention%"]
+        arguments: ["%ibexa.rest.csrf_token_intention%"]
         tags:
             - { name: kernel.event_subscriber }
 

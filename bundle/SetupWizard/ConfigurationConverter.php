@@ -28,6 +28,11 @@ class ConfigurationConverter
     protected $legacyKernel;
 
     /**
+     * @var \Closure
+     */
+    private $legacyKernelClosure;
+
+    /**
      * @var array
      */
     protected $supportedPackages;
@@ -35,8 +40,17 @@ class ConfigurationConverter
     public function __construct(LegacyConfigResolver $legacyResolver, \Closure $legacyKernel, array $supportedPackages)
     {
         $this->legacyResolver = $legacyResolver;
-        $this->legacyKernel = $legacyKernel();
+        $this->legacyKernelClosure = $legacyKernel;
         $this->supportedPackages = array_fill_keys($supportedPackages, true);
+    }
+
+    protected function getLegacyKernel()
+    {
+        if (!isset($this->legacyKernel)) {
+            $this->legacyKernel = ($this->legacyKernelClosure)();
+        }
+
+        return $this->legacyKernel;
     }
 
     /**
@@ -328,7 +342,7 @@ class ConfigurationConverter
             return $this->legacyResolver->getGroup($groupName);
         }
 
-        return $this->legacyKernel->runCallback(
+        return $this->getLegacyKernel()->runCallback(
             static function () use ($file, $groupName, $siteaccess) {
                 // @todo: do reset injected settings everytime
                 // and make sure to restore the previous injected settings
@@ -361,7 +375,7 @@ class ConfigurationConverter
             return $this->legacyResolver->getParameter("$groupName.$parameterName");
         }
 
-        return $this->legacyKernel->runCallback(
+        return $this->getLegacyKernel()->runCallback(
             static function () use ($file, $groupName, $parameterName, $siteaccess) {
                 // @todo: do reset injected settings everytime
                 // and make sure to restore the previous injected settings

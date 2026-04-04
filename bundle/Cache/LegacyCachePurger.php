@@ -26,6 +26,11 @@ class LegacyCachePurger implements CacheClearerInterface
      */
     private $legacyKernelClosure;
 
+    /**
+     * @var string
+     */
+    private $legacyRootDir;
+
     public function __construct(
         \Closure $legacyKernelClosure,
         Configuration $configurationMapper,
@@ -34,6 +39,7 @@ class LegacyCachePurger implements CacheClearerInterface
         SiteAccess $siteAccess
     ) {
         $this->legacyKernelClosure = $legacyKernelClosure;
+        $this->legacyRootDir = $legacyRootDir;
 
         // If ezp_extension.php doesn't exist or siteaccess name is "setup", it means that eZ Publish is not yet installed.
         // Hence we deactivate configuration mapper to avoid potential issues (e.g. ezxFormToken which cannot be loaded).
@@ -59,6 +65,10 @@ class LegacyCachePurger implements CacheClearerInterface
      */
     public function clear($cacheDir)
     {
+        if (!is_dir($this->legacyRootDir)) {
+            return;
+        }
+
         $this->getLegacyKernel()->runCallback(
             static function () {
                 $helper = new eZCacheHelper(

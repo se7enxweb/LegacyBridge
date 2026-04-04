@@ -11,6 +11,7 @@ use eZ\Publish\API\Repository\Values\Content\Location;
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use eZ\Publish\Core\MVC\Symfony\Controller\Content\PreviewController as BasePreviewController;
 use eZ\Publish\Core\MVC\Symfony\SiteAccess;
+use Ibexa\Core\MVC\Symfony\View\ViewManagerInterface;
 use Symfony\Component\HttpFoundation\Request;
 
 class PreviewController extends BasePreviewController
@@ -28,7 +29,7 @@ class PreviewController extends BasePreviewController
         $this->configResolver = $configResolver;
     }
 
-    protected function getForwardRequest(Location $location, Content $content, SiteAccess $previewSiteAccess, Request $request, $language)
+    protected function getForwardRequest(Location $location, Content $content, SiteAccess $previewSiteAccess, Request $request, $language, $viewType = ViewManagerInterface::VIEW_TYPE_FULL): Request
     {
         $request = parent::getForwardRequest($location, $content, $previewSiteAccess, $request, $language);
         // If the preview siteaccess is configured in legacy_mode, we forward to the LegacyKernelController.

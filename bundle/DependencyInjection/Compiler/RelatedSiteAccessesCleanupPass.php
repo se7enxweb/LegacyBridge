@@ -16,34 +16,73 @@ class RelatedSiteAccessesCleanupPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
-        $configResolver = $container->get('ezpublish.config.resolver');
-        $relationMap = $container->getParameter('ezpublish.siteaccess.relation_map');
+        // Support both Ibexa 4.x (ibexa.*) and eZPlatform 3.x (ezpublish.*) parameter names.
+        $resolverService = $container->hasAlias('ibexa.config.resolver') || $container->hasDefinition('ibexa.config.resolver')
+            ? 'ibexa.config.resolver'
+            : 'ezpublish.config.resolver';
+        $configResolver = $container->get($resolverService);
+
+        $relationMapParam = $container->hasParameter('ibexa.site_access.relation_map')
+            ? 'ibexa.site_access.relation_map'
+            : 'ezpublish.siteaccess.relation_map';
+        $relationMap = $container->getParameter($relationMapParam);
+
+        $configNs = $container->hasParameter('ibexa.site_access.relation_map')
+            ? 'ibexa.site_access.config'
+            : 'ezsettings';
 
         // Exclude siteaccesses in legacy_mode (e.g. admin interface)
         foreach ($relationMap as $repository => &$saByRootLocation) {
             foreach ($saByRootLocation as $rootLocation => $saList) {
                 foreach ($saList as $i => $sa) {
-                    if ($configResolver->getParameter('legacy_mode', 'ezsettings', $sa) === true) {
+                    try {
+                        $legacyMode = $configResolver->getParameter('legacy_mode', $configNs, $sa);
+                    } catch (\Exception $e) {
+                        $legacyMode = false;
+                    }
+                    if ($legacyMode === true) {
                         unset($saByRootLocation[$rootLocation][$i]);
                     }
                 }
             }
         }
-        $container->setParameter('ezpublish.siteaccess.relation_map', $relationMap);
+        $container->setParameter($relationMapParam, $relationMap);
 
-        $saList = $container->getParameter('ezpublish.siteaccess.list');
+        $saListParam = $container->hasParameter('ibexa.site_access.list')
+            ? 'ibexa.site_access.list'
+            : 'ezpublish.siteaccess.list';
+        $saList = $container->getParameter($saListParam);
+
         foreach ($saList as $sa) {
-            if ($configResolver->getParameter('legacy_mode', 'ezsettings', $sa) === true) {
+            try {
+                $saLegacyMode = $configResolver->getParameter('legacy_mode', $configNs, $sa);
+            } catch (\Exception $e) {
+                $saLegacyMode = false;
+            }
+            if ($saLegacyMode === true) {
                 continue;
             }
 
-            $relatedSAs = $configResolver->getParameter('related_siteaccesses', 'ezsettings', $sa);
+            try {
+                $relatedSAs = $configResolver->getParameter('related_siteaccesses', $configNs, $sa);
+            } catch (\Exception $e) {
+                $relatedSAs = [];
+            }
             foreach ($relatedSAs as $i => $relatedSa) {
-                if ($configResolver->getParameter('legacy_mode', 'ezsettings', $relatedSa) === true) {
+                try {
+                    $relatedLegacyMode = $configResolver->getParameter('legacy_mode', $configNs, $relatedSa);
+                } catch (\Exception $e) {
+                    $relatedLegacyMode = false;
+                }
+                if ($relatedLegacyMode === true) {
                     unset($relatedSAs[$i]);
                 }
             }
-            $container->setParameter("ezsettings.$sa.related_siteaccesses", $relatedSAs);
+            if ($container->hasParameter('ibexa.site_access.relation_map')) {
+                $container->setParameter("ibexa.site_access.config.$sa.related_siteaccesses", $relatedSAs);
+            } else {
+                $container->setParameter("ezsettings.$sa.related_siteaccesses", $relatedSAs);
+            }
         }
     }
 }

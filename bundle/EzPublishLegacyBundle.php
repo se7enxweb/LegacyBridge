@@ -6,6 +6,7 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle;
 
+use eZ\Bundle\EzPublishLegacyBundle\DependencyInjection\Compiler\ControllerBaseCompatibilityPass;
 use eZ\Bundle\EzPublishLegacyBundle\DependencyInjection\Compiler\PageServicePass;
 use eZ\Bundle\EzPublishLegacyBundle\DependencyInjection\Compiler\RememberMeListenerPass;
 use eZ\Bundle\EzPublishLegacyBundle\DependencyInjection\Compiler\LegacyBundlesPass;
@@ -28,17 +29,25 @@ class EzPublishLegacyBundle extends Bundle
             return;
         }
 
+        $autoload = $this->container->getParameter('ezpublish_legacy.root_dir') . '/autoload.php';
+        if (!is_file($autoload)) {
+            return;
+        }
+
         // Deactivate eZComponents loading from legacy autoload.php as they are already loaded
         if (!\defined('EZCBASE_ENABLED')) {
             \define('EZCBASE_ENABLED', false);
         }
 
-        require_once $this->container->getParameter('ezpublish_legacy.root_dir') . '/autoload.php';
+        require_once $autoload;
     }
 
     public function build(ContainerBuilder $container)
     {
         parent::build($container);
+        // Must run before Symfony's ResolveChildDefinitionsPass so ezpublish.controller.base
+        // exists when child services are resolved on Ibexa 4.x.
+        $container->addCompilerPass(new ControllerBaseCompatibilityPass(), PassConfig::TYPE_BEFORE_OPTIMIZATION, 10);
         $container->addCompilerPass(new RelatedSiteAccessesCleanupPass(), PassConfig::TYPE_OPTIMIZE);
         $container->addCompilerPass(new LegacyPass());
         $container->addCompilerPass(new TwigPass());
