@@ -88,6 +88,8 @@ class EzPublishLegacyExtension extends Extension
                 if (isset($scopeSettings['legacy_mode'])) {
                     $container = $contextualizer->getContainer();
                     $container->setParameter("ezsettings.$currentScope.legacy_mode", $scopeSettings['legacy_mode']);
+                    // Also store under the ibexa.site_access.config namespace used by ChainConfigResolver in Ibexa DXP 4.x+
+                    $container->setParameter("ibexa.site_access.config.$currentScope.legacy_mode", $scopeSettings['legacy_mode']);
                     $container->setParameter("ezsettings.$currentScope.url_alias_router", !$scopeSettings['legacy_mode']);
                 }
             }
