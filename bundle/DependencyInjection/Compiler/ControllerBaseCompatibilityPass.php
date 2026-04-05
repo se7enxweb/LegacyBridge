@@ -125,5 +125,16 @@ class ControllerBaseCompatibilityPass implements CompilerPassInterface
                 $container->setParameter($legacyParam, $container->getParameter($ibexaParam));
             }
         }
+
+        // Symfony 5.4+ with storage_factory_id no longer registers a 'session.storage' alias.
+        // ezpublish_legacy.session_mapper depends on '@session.storage'; create the alias when absent.
+        if (!$container->hasAlias('session.storage') && !$container->hasDefinition('session.storage')) {
+            foreach (['session.storage.native', 'session.storage.php_bridge', 'session.storage.mock_file'] as $candidate) {
+                if ($container->hasDefinition($candidate)) {
+                    $container->setAlias('session.storage', $candidate)->setPublic(false);
+                    break;
+                }
+            }
+        }
     }
 }

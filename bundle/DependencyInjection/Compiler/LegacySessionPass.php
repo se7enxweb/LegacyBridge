@@ -17,6 +17,17 @@ class LegacySessionPass implements CompilerPassInterface
 {
     public function process(ContainerBuilder $container)
     {
+        // Symfony 5.4+ storage_factory_id does not register a 'session.storage' alias.
+        // Create one pointing to the concrete storage so legacy services can depend on it.
+        if (!$container->hasAlias('session.storage') && !$container->hasDefinition('session.storage')) {
+            foreach (['session.storage.native', 'session.storage.php_bridge', 'session.storage.mock_file'] as $storage) {
+                if ($container->hasDefinition($storage)) {
+                    $container->setAlias('session.storage', $storage)->setPublic(false);
+                    break;
+                }
+            }
+        }
+
         if (!$container->hasAlias('session.storage')) {
             return;
         }
