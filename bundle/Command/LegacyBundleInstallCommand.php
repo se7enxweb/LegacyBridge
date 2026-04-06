@@ -59,7 +59,7 @@ EOT
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $options = [
             'copy' => (bool)$input->getOption('copy'),
@@ -78,6 +78,8 @@ EOT
                 }
             }
         }
+
+        return 0;
     }
 
     /**

@@ -56,7 +56,7 @@ EOT
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $targetArg = trim( rtrim( $input->getArgument('target'), '/'), "'" );
 
@@ -153,6 +153,8 @@ EOT
 EOT;
             $filesystem->dumpFile($newFrontController, $code);
         }
+
+        return 0;
     }
 
     private function isDirectoryEmpty($path)

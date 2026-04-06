@@ -45,7 +45,7 @@ EOT
         $this->ignoreValidationErrors();
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $legacyScript = $input->getArgument('script');
 
@@ -78,5 +78,7 @@ EOT
         // CLIHandler is contained in $legacyKernel, but we need to inject the script to run separately.
         $legacyCLIHandlerClosure()->setEmbeddedScriptPath($legacyScript);
         $legacyKernelClosure()->run();
+
+        return 0;
     }
 }
