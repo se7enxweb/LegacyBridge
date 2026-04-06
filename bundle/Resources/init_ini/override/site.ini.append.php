@@ -9,6 +9,7 @@ VarDir=var/site
 [ExtensionSettings]
 ActiveExtensions[]
 ActiveExtensions[]=app
+ActiveExtensions[]=ngsite
 ActiveExtensions[]=sevenx_themes_simple
 ActiveExtensions[]=xrowmetadata
 ActiveExtensions[]=hcaptcha
