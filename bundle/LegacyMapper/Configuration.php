@@ -138,6 +138,7 @@ class Configuration implements EventSubscriberInterface
                             'pdo_mysql' => 'ezmysqli',
                             'pdo_pgsql' => 'ezpostgresql',
                             'oci8' => 'ezoracle',
+                            'pdo_sqlite' => 'sqlite3',
                         ];
                         if (!isset($driverMap[$iniValue])) {
                             throw new RuntimeException(
@@ -160,6 +161,12 @@ class Configuration implements EventSubscriberInterface
                         break;
                 }
             }
+        }
+
+        // For SQLite, DBAL uses 'path' instead of 'dbname'; inject it as Database so the legacy
+        // SQLite3 handler receives the full absolute path to the shared database file.
+        if (isset($databaseSettings['path'], $databaseSettings['driver']) && $databaseSettings['driver'] === 'pdo_sqlite') {
+            $settings['site.ini/DatabaseSettings/Database'] = $databaseSettings['path'];
         }
 
         // Image settings
