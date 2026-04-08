@@ -27,7 +27,8 @@ class LegacyInitCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('ezpublish:legacy:init')
+            ->setName('exponential:legacy:init')
+            ->setAliases(['ezpublish:legacy:init'])
             ->setDefinition(
                 [
                     new InputArgument('src', InputArgument::OPTIONAL, 'The src directory for legacy files', 'src/legacy_files'),

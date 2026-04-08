@@ -30,7 +30,8 @@ class LegacyEmbedScriptCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('ezpublish:legacy:script')
+            ->setName('exponential:legacy:script')
+            ->setAliases(['ezpublish:legacy:script'])
             ->addArgument('script', InputArgument::REQUIRED, 'Path to legacy script you want to run. Path must be relative to the legacy root')
             ->addOption('legacy-help', null, InputOption::VALUE_NONE, 'Use this option if you want to display help for the legacy script')
             ->setDescription('Runs an eZ Publish legacy script.')

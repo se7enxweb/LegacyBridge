@@ -36,7 +36,8 @@ class LegacyWrapperInstallCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('ezpublish:legacy:assets_install')
+            ->setName('exponential:legacy:assets-install')
+            ->setAliases(['ezpublish:legacy:assets_install'])
             ->setDefinition(
                 [
                     new InputArgument('target', InputArgument::OPTIONAL, 'The target directory', 'web'),
