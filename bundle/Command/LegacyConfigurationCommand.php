@@ -46,7 +46,8 @@ class LegacyConfigurationCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('ezpublish:configure')
+            ->setName('exponential:legacy:configure')
+            ->setAliases(['ezpublish:configure'])
             ->setDefinition(
                 [
                     new InputArgument('package', InputArgument::REQUIRED, 'Name of the installed package. Used to generate the settings group name. Example: ezdemo_site'),

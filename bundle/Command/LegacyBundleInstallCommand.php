@@ -46,7 +46,8 @@ class LegacyBundleInstallCommand extends Command
     protected function configure()
     {
         $this
-            ->setName('ezpublish:legacybundles:install_extensions')
+            ->setName('exponential:legacy:install-extensions')
+            ->setAliases(['ezpublish:legacybundles:install_extensions'])
             ->addOption('copy', null, InputOption::VALUE_NONE, 'Creates copies of the extensions instead of using a symlink')
             ->addOption('relative', null, InputOption::VALUE_NONE, 'Make relative symlinks')
             ->addOption('force', null, InputOption::VALUE_NONE, 'Force overwriting of existing directory (will be removed)')
