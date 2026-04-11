@@ -36,9 +36,24 @@ class LegacyToken implements TokenInterface
         list($this->innerToken) = unserialize($serialized);
     }
 
+    public function __serialize(): array
+    {
+        return [$this->innerToken];
+    }
+
+    public function __unserialize(array $data): void
+    {
+        [$this->innerToken] = $data;
+    }
+
     public function __toString()
     {
         return $this->innerToken->__toString();
+    }
+
+    public function getRoleNames(): array
+    {
+        return $this->innerToken->getRoleNames();
     }
 
     public function getRoles()
