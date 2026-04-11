@@ -11,7 +11,7 @@ use eZ\Publish\API\Repository\Repository;
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
 use eZ\Publish\Core\MVC\Legacy\Security\LegacyToken;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use Symfony\Component\HttpKernel\Event\GetResponseEvent;
+use Symfony\Component\HttpKernel\Event\RequestEvent;
 use Symfony\Component\HttpKernel\KernelEvents;
 use Symfony\Component\HttpKernel\HttpKernelInterface;
 use Symfony\Component\Security\Core\Authentication\Token\Storage\TokenStorageInterface;
@@ -53,9 +53,9 @@ class RequestListener implements EventSubscriberInterface
      * If user is logged-in in legacy_mode (e.g. legacy admin interface),
      * will inject currently logged-in user in the repository.
      *
-     * @param GetResponseEvent $event
+     * @param RequestEvent $event
      */
-    public function onKernelRequest(GetResponseEvent $event)
+    public function onKernelRequest(RequestEvent $event)
     {
         /** @var \eZ\Publish\Core\MVC\ConfigResolverInterface $configResolver */
         $request = $event->getRequest();
@@ -76,7 +76,7 @@ class RequestListener implements EventSubscriberInterface
             if ($token instanceof LegacyToken &&
                 $token->getUser() instanceof User &&
                 $token->getUser()->getAPIUserReference()->getUserId() === $legacyUserId &&
-                $this->repository->getCurrentUserReference()->getUserId() === $legacyUserId
+                $this->repository->getPermissionResolver()->getCurrentUserReference()->getUserId() === $legacyUserId
             ) {
                 // All seems ok, we can skip loading anything here
                 return;
@@ -84,7 +84,7 @@ class RequestListener implements EventSubscriberInterface
 
             // Load user and set as current
             $apiUser = $this->repository->getUserService()->loadUser($legacyUserId);
-            $this->repository->setCurrentUser($apiUser);
+            $this->repository->getPermissionResolver()->setCurrentUserReference($apiUser);
 
             if ($token instanceof TokenInterface) {
                 $token->setUser(new User($apiUser));
