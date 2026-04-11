@@ -138,7 +138,7 @@ class Configuration implements EventSubscriberInterface
                             'pdo_mysql' => 'ezmysqli',
                             'pdo_pgsql' => 'ezpostgresql',
                             'oci8' => 'ezoracle',
-                            'pdo_sqlite' => 'ezsqlite3',
+                            'pdo_sqlite' => 'sqlite3',
                         ];
                         if (!isset($driverMap[$iniValue])) {
                             throw new RuntimeException(
