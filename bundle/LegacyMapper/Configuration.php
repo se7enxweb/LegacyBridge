@@ -163,6 +163,16 @@ class Configuration implements EventSubscriberInterface
             }
         }
 
+        // Doctrine uses 'path' (not 'dbname') for SQLite connections.
+        if (
+            isset($databaseSettings['driver']) &&
+            $databaseSettings['driver'] === 'pdo_sqlite' &&
+            !isset($settings['site.ini/DatabaseSettings/Database']) &&
+            isset($databaseSettings['path'])
+        ) {
+            $settings['site.ini/DatabaseSettings/Database'] = $databaseSettings['path'];
+        }
+
         // Image settings
         $settings += $this->getImageSettings();
         // File settings
