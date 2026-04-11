@@ -8,6 +8,7 @@ LoginPage=custom
 RequireUserLogin=true
 RelatedSiteAccessList[]
 RelatedSiteAccessList[]=site
+RelatedSiteAccessList[]=admin
 RelatedSiteAccessList[]=legacy_admin
 ShowHiddenNodes=true
 
@@ -26,6 +27,7 @@ ContentObjectLocale=eng-GB
 ShowUntranslatedObjects=enabled
 SiteLanguageList[]
 SiteLanguageList[]=eng-GB
+SiteLanguageList[]=eng-US
 TextTranslation=disabled
 
 [ContentSettings]
