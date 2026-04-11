@@ -84,7 +84,7 @@ class RequestListener implements EventSubscriberInterface
 
             // Load user and set as current
             $apiUser = $this->repository->getUserService()->loadUser($legacyUserId);
-            $this->repository->setCurrentUser($apiUser);
+            $this->repository->getPermissionResolver()->setCurrentUserReference($apiUser);
 
             if ($token instanceof TokenInterface) {
                 $token->setUser(new User($apiUser));
