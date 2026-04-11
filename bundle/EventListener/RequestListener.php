@@ -76,7 +76,7 @@ class RequestListener implements EventSubscriberInterface
             if ($token instanceof LegacyToken &&
                 $token->getUser() instanceof User &&
                 $token->getUser()->getAPIUserReference()->getUserId() === $legacyUserId &&
-                $this->repository->getCurrentUserReference()->getUserId() === $legacyUserId
+                $this->repository->getPermissionResolver()->getCurrentUserReference()->getUserId() === $legacyUserId
             ) {
                 // All seems ok, we can skip loading anything here
                 return;
