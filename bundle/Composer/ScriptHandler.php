@@ -6,11 +6,45 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Composer;
 
-use Sensio\Bundle\DistributionBundle\Composer\ScriptHandler as DistributionBundleScriptHandler;
 use Composer\Script\Event;
 
-class ScriptHandler extends DistributionBundleScriptHandler
+class ScriptHandler
 {
+    private static array $defaultOptions = [
+        'symfony-bin-dir' => 'bin',
+        'symfony-web-dir' => 'public',
+        'symfony-assets-install' => 'hard',
+    ];
+
+    protected static function getOptions(Event $event): array
+    {
+        return array_merge(static::$defaultOptions, $event->getComposer()->getPackage()->getExtra());
+    }
+
+    protected static function getConsoleDir(Event $event, string $actionName): ?string
+    {
+        $options = static::getOptions($event);
+
+        return $options['symfony-bin-dir'] ?? 'bin';
+    }
+
+    protected static function executeCommand(Event $event, string $consoleDir, string $cmd, int $timeout = 300): void
+    {
+        $php = escapeshellarg(PHP_BINARY);
+        $console = escapeshellarg($consoleDir . '/console');
+
+        if ($event->getIO()->isDecorated()) {
+            $cmd .= ' --ansi';
+        }
+
+        $exitCode = 0;
+        passthru("{$php} {$console} {$cmd}", $exitCode);
+
+        if ($exitCode !== 0) {
+            throw new \RuntimeException(sprintf('An error occurred when executing the "%s" command (exit code %d).', $cmd, $exitCode));
+        }
+    }
+
     /**
      * Installs the legacy assets under the web root directory.
      *
@@ -138,7 +172,7 @@ class ScriptHandler extends DistributionBundleScriptHandler
         }
 
         $trace = debug_backtrace(DEBUG_BACKTRACE_IGNORE_ARGS, 1);
-        echo "The ${composerSetting} (${dir}) specified in composer.json was not found in " . getcwd();
+        echo "The {$composerSetting} ({$dir}) specified in composer.json was not found in " . getcwd();
         echo ', can not execute: ' . $trace[0]['function'] . PHP_EOL;
 
         return false;
