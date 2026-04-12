@@ -23,7 +23,7 @@
         "se7enxweb/ezplatform-xmltext-fieldtype": "^2.0",
         "symfony/framework-bundle": "^5.4",
         "se7enxweb/ngsymfonytools": "^3.0",
-        "se7enxweb/richtext-datatype-bundle": "dev-2.0.x"
+        "se7enxweb/richtext-datatype-bundle": "2.0.x-dev"
     },
     "require-dev": {
         "friendsofphp/php-cs-fixer": "^3.0",
