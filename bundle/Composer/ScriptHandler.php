@@ -6,10 +6,10 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Composer;
 
-use Sensio\Bundle\DistributionBundle\Composer\ScriptHandler as DistributionBundleScriptHandler;
 use Composer\Script\Event;
+use Composer\Util\ProcessExecutor;
 
-class ScriptHandler extends DistributionBundleScriptHandler
+class ScriptHandler
 {
     /**
      * Installs the legacy assets under the web root directory.
@@ -101,6 +101,36 @@ class ScriptHandler extends DistributionBundleScriptHandler
         }
 
         static::executeCommand($event, $consoleDir, 'ezpublish:legacy:symlink ' . $srcFolder);
+    }
+
+    protected static function getOptions(Event $event): array
+    {
+        return array_merge(
+            ['symfony-web-dir' => 'public', 'symfony-assets-install' => 'relative'],
+            $event->getComposer()->getPackage()->getExtra()
+        );
+    }
+
+    protected static function getConsoleDir(Event $event, string $action): ?string
+    {
+        $options = static::getOptions($event);
+        $consoleDir = $options['symfony-bin-dir'] ?? 'bin';
+        if (!is_dir($consoleDir)) {
+            $event->getIO()->writeError(sprintf('The %s (%s) specified in composer.json was not found, cannot %s.', 'symfony-bin-dir', $consoleDir, $action));
+            return null;
+        }
+        return $consoleDir;
+    }
+
+    protected static function executeCommand(Event $event, string $consoleDir, string $cmd, int $timeout = 300): void
+    {
+        $php = escapeshellarg(\Composer\Util\Platform::isWindows() ? 'php' : (PHP_BINARY ?: 'php'));
+        $console = escapeshellarg($consoleDir . '/console');
+        if ($event->getIO()->isDecorated()) {
+            $console .= ' --ansi';
+        }
+        $executor = new ProcessExecutor($event->getIO());
+        $executor->execute($php . ' ' . $console . ' ' . $cmd);
     }
 
     private static function isDir($dir, $composerSetting)

@@ -26,14 +26,14 @@ class LegacyToken implements TokenInterface
         $this->innerToken = $innerToken;
     }
 
-    public function serialize()
+    public function __serialize(): array
     {
-        return serialize([$this->innerToken]);
+        return [$this->innerToken];
     }
 
-    public function unserialize($serialized)
+    public function __unserialize(array $data): void
     {
-        list($this->innerToken) = unserialize($serialized);
+        [$this->innerToken] = $data;
     }
 
     public function __toString()
@@ -41,14 +41,14 @@ class LegacyToken implements TokenInterface
         return $this->innerToken->__toString();
     }
 
-    public function getRoles()
+    public function getRoles(): array
     {
         return $this->innerToken->getRoles();
     }
 
-    public function getCredentials()
+    public function getUserIdentifier(): string
     {
-        return $this->innerToken->getCredentials();
+        return $this->innerToken->getUserIdentifier();
     }
 
     public function getUser()
@@ -59,21 +59,6 @@ class LegacyToken implements TokenInterface
     public function setUser($user)
     {
         $this->innerToken->setUser($user);
-    }
-
-    public function getUsername()
-    {
-        return $this->innerToken->getUsername();
-    }
-
-    public function isAuthenticated()
-    {
-        return true;
-    }
-
-    public function setAuthenticated($isAuthenticated)
-    {
-        $this->innerToken->setAuthenticated($isAuthenticated);
     }
 
     public function eraseCredentials()
