@@ -103,6 +103,34 @@ class ScriptHandler extends DistributionBundleScriptHandler
         static::executeCommand($event, $consoleDir, 'ezpublish:legacy:symlink ' . $srcFolder);
     }
 
+    /**
+     * Copies legacy INI settings from the bundle's init_ini/ directory into
+     * ezpublish_legacy/settings/ on composer install/update.
+     *
+     * Skips files that already exist (idempotent — will not overwrite customised settings).
+     */
+    public static function installIniSettings(Event $event)
+    {
+        $initIniDir = __DIR__ . '/../Resources/init_ini';
+
+        if (!is_dir($initIniDir)) {
+            $event->getIO()->writeError('<warning>LegacyBridge: init_ini directory not found, skipping INI settings install.</warning>');
+            return;
+        }
+
+        $legacySettingsDir = getcwd() . '/ezpublish_legacy/settings';
+
+        if (!is_dir($legacySettingsDir)) {
+            $event->getIO()->writeError('<warning>LegacyBridge: ezpublish_legacy/settings not found, skipping INI settings install.</warning>');
+            return;
+        }
+
+        $filesystem = new \Symfony\Component\Filesystem\Filesystem();
+        $filesystem->mirror($initIniDir, $legacySettingsDir, null, ['override' => false]);
+
+        $event->getIO()->write('  <info>LegacyBridge:</info> INI settings installed into ezpublish_legacy/settings/ (existing files not overwritten).');
+    }
+
     private static function isDir($dir, $composerSetting)
     {
         if (is_dir($dir)) {
