@@ -1,40 +1,27 @@
 <?php /* #?ini charset="utf-8"?
 
 [DatabaseSettings]
-Charset=utf8mb4
+#DatabaseImplementation=sqlite3
+#Database=../var/data_dev.db
+#Charset=utf8mb4
+
+[DebugSettings]
+DebugOutput=enabled
+Debug=true
 
 [FileSettings]
 VarDir=var/site
 
 [ExtensionSettings]
 ActiveExtensions[]
+ActiveExtensions[]=ngsymfonytools
+ActiveExtensions[]=sevenx_themes_simple
+ActiveExtensions[]=bcwebsitestatistics
+ActiveExtensions[]=ezrichtext
+ActiveExtensions[]=ezplatformsearch
+ActiveExtensions[]=ezdemo
 ActiveExtensions[]=ezjscore
 ActiveExtensions[]=ezoe
-ActiveExtensions[]=ezformtoken
-ActiveExtensions[]=ezstarrating
-ActiveExtensions[]=ezgmaplocation
-ActiveExtensions[]=ezdemo
-ActiveExtensions[]=ezwt
-ActiveExtensions[]=ezflow
-ActiveExtensions[]=ezie
-ActiveExtensions[]=ezodf
-ActiveExtensions[]=ezprestapiprovider
-ActiveExtensions[]=ezmultiupload
-ActiveExtensions[]=ezautosave
-ActiveExtensions[]=ezmbpaex
-
-# Optional, see: https://packagist.org/packages/ezsystems/eztags-ls
-#ActiveExtensions[]=eztags
-
-## Some recommended bundles/extensions for use with legacy bridge setups:
-# Extra features to reuse code from Symfony in legacy: https://packagist.org/packages/netgen/ngsymfonytools
-#ActiveExtensions[]=ngsymfonytools
-
-# Use SolrBundle from legacy: https://packagist.org/packages/netgen/ezplatformsearch
-#ActiveExtensions[]=ezplatformsearch
-
-# Edit eZ Platform richtext in raw xml on legacy: https://packagist.org/packages/netgen/richtext-datatype-bundle
-#ActiveExtensions[]=ezrichtext
 
 [Session]
 SessionNameHandler=custom
@@ -43,7 +30,9 @@ SessionNameHandler=custom
 DefaultAccess=site
 SiteList[]
 SiteList[]=site
+SiteList[]=admin
 SiteList[]=legacy_admin
+SiteList[]=legacy_site
 RootNodeDepth=1
 
 [UserSettings]
@@ -53,9 +42,16 @@ LogoutRedirect=/
 CheckValidity=false
 AvailableSiteAccessList[]
 AvailableSiteAccessList[]=site
+AvailableSiteAccessList[]=admin
+AvailableSiteAccessList[]=legacy_site
 AvailableSiteAccessList[]=legacy_admin
-MatchOrder=uri
+MatchOrder=host;uri
 HostMatchMapItems[]
+HostMatchMapItems[]=platform.alpha.se7enx.com;site
+HostMatchMapItems[]=edit.platform.alpha.se7enx.com;admin
+
+[DesignSettings]
+DesignLocationCache=enabled
 
 [RegionalSettings]
 TranslationSA[]
@@ -71,20 +67,5 @@ AvailableViewModes[]=embed
 AvailableViewModes[]=embed-inline
 InlineViewModes[]
 InlineViewModes[]=embed-inline
-
-# TIP: Below are settings that could make sense to invert for debug needs during legacy development.
-# Especially [TemplateSettings]DevelopmentMode to not have to clear cache every time you change a template.
-
-[DesignSettings]
-DesignLocationCache=enabled
-
-[DebugSettings]
-DebugOutput=disabled
-DebugRedirection=disabled
-
-[TemplateSettings]
-DevelopmentMode=disabled
-ShowUsedTemplates=disabled
-Debug=disabled
 
 */ ?>
