@@ -56,7 +56,7 @@ class LegacyEngine implements EngineInterface
      *
      * @api
      */
-    public function render($name, array $parameters = [])
+    public function render(string|\Symfony\Component\Templating\TemplateReferenceInterface $name, array $parameters = []): string
     {
         $objectConverter = $this->objectConverter;
         $legacyVars = [];
@@ -102,7 +102,7 @@ class LegacyEngine implements EngineInterface
      *
      * @return bool true if the template exists, false otherwise
      */
-    public function exists($name)
+    public function exists(string|\Symfony\Component\Templating\TemplateReferenceInterface $name): bool
     {
         return $this->getLegacyKernel()->runCallback(
             static function () use ($name) {
@@ -120,7 +120,7 @@ class LegacyEngine implements EngineInterface
      *
      * @return bool true if this class supports the given template, false otherwise
      */
-    public function supports($name)
+    public function supports(string|\Symfony\Component\Templating\TemplateReferenceInterface $name): bool
     {
         $name = (string)$name;
 

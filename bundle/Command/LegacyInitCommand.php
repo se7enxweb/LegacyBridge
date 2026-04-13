@@ -59,7 +59,7 @@ EOT
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $this->createDirectories($input, $output);
         $this->updateComposeJson($output);
@@ -79,6 +79,8 @@ Once done you can run the following command to setup symlinks, dump assets, (...
 
 EOT
         );
+
+        return 0;
     }
 
     protected function createDirectories(InputInterface $input, OutputInterface $output)

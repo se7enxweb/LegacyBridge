@@ -8,8 +8,8 @@ namespace eZ\Bundle\EzPublishLegacyBundle\Cache;
 
 use Symfony\Component\Cache\Adapter\TagAwareAdapterInterface;
 use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
-use eZ\Publish\SPI\Persistence\Content\Location\Handler as LocationHandlerInterface;
-use eZ\Publish\Core\Base\Exceptions\InvalidArgumentType;
+use Ibexa\Contracts\Core\Persistence\Content\Location\Handler as LocationHandlerInterface;
+use Ibexa\Core\Base\Exceptions\InvalidArgumentType;
 use Ibexa\Core\Persistence\Cache\Identifier\CacheIdentifierGeneratorInterface;
 
 /**
@@ -382,7 +382,7 @@ class PersistenceCachePurger implements CacheClearerInterface
      *
      * @param string $cacheDir the cache directory
      */
-    public function clear($cacheDir)
+    public function clear(string $cacheDir): void
     {
         if ($this->clearAllSPICacheOnSymfonyClearCache) {
             $this->flushSPICache();

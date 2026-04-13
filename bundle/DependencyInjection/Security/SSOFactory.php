@@ -6,52 +6,42 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\DependencyInjection\Security;
 
-use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AbstractFactory;
-use Symfony\Component\DependencyInjection\ContainerBuilder;
+use Symfony\Bundle\SecurityBundle\DependencyInjection\Security\Factory\AuthenticatorFactoryInterface;
+use Symfony\Component\Config\Definition\Builder\NodeDefinition;
 use Symfony\Component\DependencyInjection\ChildDefinition;
-use Symfony\Component\DependencyInjection\Reference;
+use Symfony\Component\DependencyInjection\ContainerBuilder;
 
 /**
- * Security factory for legacy SSO handlers.
+ * Security factory for legacy SSO handlers — Symfony 7 authenticator-based.
  */
-class SSOFactory extends AbstractFactory
+class SSOFactory implements AuthenticatorFactoryInterface
 {
-    protected function createAuthProvider(ContainerBuilder $container, $id, $config, $userProviderId)
+    public function getPriority(): int
     {
-        $preAuthProviderId = 'security.authentication.provider.pre_authenticated';
-        $providerId = "$preAuthProviderId.$id";
-        $container
-            ->setDefinition($providerId, new ChildDefinition($preAuthProviderId))
-            ->replaceArgument(0, new Reference($userProviderId))
-            ->replaceArgument(1, new Reference('security.user_checker.' . $id))
-            ->addArgument($id);
-
-        return $providerId;
+        return -10;
     }
 
-    protected function createListener($container, $id, $config, $userProvider)
-    {
-        $parentListenerId = $this->getListenerId();
-        $listenerId = "$parentListenerId.$id";
-        $container
-            ->setDefinition($listenerId, new ChildDefinition($parentListenerId))
-            ->replaceArgument(2, $id);
-
-        return $listenerId;
-    }
-
-    protected function getListenerId()
-    {
-        return 'ezpublish_legacy.security.sso_firewall_listener';
-    }
-
-    public function getPosition()
-    {
-        return 'pre_auth';
-    }
-
-    public function getKey()
+    public function getKey(): string
     {
         return 'ezpublish_legacy_sso';
+    }
+
+    public function addConfiguration(NodeDefinition $builder): void
+    {
+        // No extra configuration needed.
+    }
+
+    public function createAuthenticator(
+        ContainerBuilder $container,
+        string $firewallName,
+        array $config,
+        string $userProviderId
+    ): string {
+        $authenticatorId = 'ezpublish_legacy.security.sso_authenticator.' . $firewallName;
+        $container
+            ->setDefinition($authenticatorId, new ChildDefinition('ezpublish_legacy.security.sso_authenticator'))
+            ->replaceArgument(0, $userProviderId);
+
+        return $authenticatorId;
     }
 }

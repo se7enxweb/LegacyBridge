@@ -11,7 +11,7 @@ use eZ\Bundle\EzPublishLegacyBundle\SetupWizard\ConfigurationDumper;
 use eZ\Publish\Core\MVC\Legacy\Kernel\Loader;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Component\HttpFoundation\Response;
-use eZ\Publish\Core\MVC\Symfony\ConfigDumperInterface;
+use Ibexa\Core\MVC\Symfony\ConfigDumperInterface;
 use eZ\Bundle\EzPublishLegacyBundle\DependencyInjection\Configuration\LegacyConfigResolver;
 use eZ\Bundle\EzPublishLegacyBundle\Cache\PersistenceCachePurger;
 use eZINI;

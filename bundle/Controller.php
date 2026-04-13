@@ -6,7 +6,7 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle;
 
-use eZ\Bundle\EzPublishCoreBundle\Controller as BaseController;
+use Ibexa\Bundle\Core\Controller as BaseController;
 
 class Controller extends BaseController
 {

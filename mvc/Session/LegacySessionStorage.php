@@ -9,6 +9,7 @@ namespace eZ\Publish\Core\MVC\Legacy\Session;
 use Symfony\Component\HttpFoundation\Session\SessionBagInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\MetadataBag;
 use Symfony\Component\HttpFoundation\Session\Storage\NativeSessionStorage;
+use Symfony\Component\HttpFoundation\Session\Storage\Proxy\AbstractProxy;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
 use ezpEvent;
 use eZSession;
@@ -41,32 +42,32 @@ class LegacySessionStorage extends NativeSessionStorage
         $this->legacyKernelClosure = $legacyKernelClosure;
     }
 
-    public function start()
+    public function start(): bool
     {
         return $this->innerSessionStorage->start();
     }
 
-    public function isStarted()
+    public function isStarted(): bool
     {
         return $this->innerSessionStorage->isStarted();
     }
 
-    public function getId()
+    public function getId(): string
     {
         return $this->innerSessionStorage->getId();
     }
 
-    public function setId($id)
+    public function setId(string $id): void
     {
         $this->innerSessionStorage->setId($id);
     }
 
-    public function getName()
+    public function getName(): string
     {
         return $this->innerSessionStorage->getName();
     }
 
-    public function setName($name)
+    public function setName(string $name): void
     {
         $this->innerSessionStorage->setName($name);
     }
@@ -76,7 +77,7 @@ class LegacySessionStorage extends NativeSessionStorage
      *
      * {@inheritdoc}
      */
-    public function regenerate($destroy = false, $lifetime = null)
+    public function regenerate(bool $destroy = false, ?int $lifetime = null): bool
     {
         $oldSessionId = $this->getId();
         $success = $this->innerSessionStorage->regenerate($destroy, $lifetime);
@@ -103,7 +104,7 @@ class LegacySessionStorage extends NativeSessionStorage
         return $success;
     }
 
-    public function save()
+    public function save(): void
     {
         $this->innerSessionStorage->save();
     }
@@ -111,50 +112,51 @@ class LegacySessionStorage extends NativeSessionStorage
     /**
      * Clear all session data in memory.
      */
-    public function clear()
+    public function clear(): void
     {
         $this->innerSessionStorage->clear();
     }
 
-    public function getBag($name)
+    public function getBag(string $name): SessionBagInterface
     {
         return $this->innerSessionStorage->getBag($name);
     }
 
-    public function registerBag(SessionBagInterface $bag)
+    public function registerBag(SessionBagInterface $bag): void
     {
         $this->innerSessionStorage->registerBag($bag);
     }
 
-    public function getMetadataBag()
+    public function getMetadataBag(): MetadataBag
     {
         return $this->innerSessionStorage->getMetadataBag();
     }
 
     // Below reimplementation of public methods from NativeSessionStorage.
 
-    public function setMetadataBag(MetadataBag $metaBag = null)
+    public function setMetadataBag(?MetadataBag $metaBag): void
     {
         if ($this->innerSessionStorage instanceof NativeSessionStorage) {
             $this->innerSessionStorage->setMetadataBag($metaBag);
         }
     }
 
-    public function getSaveHandler()
+    public function getSaveHandler(): AbstractProxy|\SessionHandlerInterface
     {
         if ($this->innerSessionStorage instanceof NativeSessionStorage) {
             return $this->innerSessionStorage->getSaveHandler();
         }
+        throw new \LogicException('getSaveHandler() requires innerSessionStorage to be a NativeSessionStorage instance.');
     }
 
-    public function setSaveHandler($saveHandler = null)
+    public function setSaveHandler(AbstractProxy|\SessionHandlerInterface|null $saveHandler): void
     {
         if ($this->innerSessionStorage instanceof NativeSessionStorage) {
             $this->innerSessionStorage->setSaveHandler($saveHandler);
         }
     }
 
-    public function setOptions(array $options)
+    public function setOptions(array $options): void
     {
         if ($this->innerSessionStorage instanceof NativeSessionStorage) {
             $this->innerSessionStorage->setOptions($options);

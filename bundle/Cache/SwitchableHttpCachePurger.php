@@ -6,7 +6,7 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Cache;
 
-use EzSystems\PlatformHttpCacheBundle\PurgeClient\PurgeClientInterface;
+use Ibexa\Contracts\HttpCache\PurgeClient\PurgeClientInterface;
 
 /**
  * A PurgeClient decorator that allows the actual purger to be switched on/off.

@@ -61,6 +61,6 @@ class EzPublishLegacyBundle extends Bundle
 
         /** @var \Symfony\Bundle\SecurityBundle\DependencyInjection\SecurityExtension $securityExtension */
         $securityExtension = $container->getExtension('security');
-        $securityExtension->addSecurityListenerFactory(new SSOFactory());
+        $securityExtension->addAuthenticatorFactory(new SSOFactory());
     }
 }

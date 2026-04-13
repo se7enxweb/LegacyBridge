@@ -46,7 +46,7 @@ class FallbackRouter implements RouterInterface, RequestMatcherInterface
      *
      * @param \Symfony\Component\Routing\RequestContext $context The context
      */
-    public function setContext(RequestContext $context)
+    public function setContext(RequestContext $context): void
     {
         $this->context = $context;
     }
@@ -56,7 +56,7 @@ class FallbackRouter implements RouterInterface, RequestMatcherInterface
      *
      * @return \Symfony\Component\Routing\RequestContext The context
      */
-    public function getContext()
+    public function getContext(): RequestContext
     {
         return $this->context;
     }
@@ -66,7 +66,7 @@ class FallbackRouter implements RouterInterface, RequestMatcherInterface
      *
      * @return RouteCollection A RouteCollection instance
      */
-    public function getRouteCollection()
+    public function getRouteCollection(): RouteCollection
     {
         // No route registered for legacy fallback, request will be forwarded directly to the legacy kernel
         return new RouteCollection();
@@ -100,7 +100,7 @@ class FallbackRouter implements RouterInterface, RequestMatcherInterface
      *
      * @api
      */
-    public function generate($name, $parameters = [], $referenceType = self::ABSOLUTE_PATH)
+    public function generate(string $name, array $parameters = [], int $referenceType = self::ABSOLUTE_PATH): string
     {
         if ($name === self::ROUTE_NAME) {
             if (!isset($parameters['module_uri'])) {
@@ -116,12 +116,12 @@ class FallbackRouter implements RouterInterface, RequestMatcherInterface
         throw new RouteNotFoundException();
     }
 
-    public function match($pathinfo)
+    public function match(string $pathinfo): array
     {
         throw new RuntimeException("The UrlAliasRouter doesn't support the match() method. Please use matchRequest() instead.");
     }
 
-    public function matchRequest(Request $request)
+    public function matchRequest(Request $request): array
     {
         $moduleUri = rtrim($request->attributes->get('semanticPathinfo', $request->getPathInfo()), '/')
                      . $request->attributes->get('viewParametersString', '')

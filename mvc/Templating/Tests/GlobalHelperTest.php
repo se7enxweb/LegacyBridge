@@ -7,7 +7,7 @@
 namespace eZ\Publish\Core\MVC\Legacy\Templating\Tests;
 
 use eZ\Publish\Core\MVC\Legacy\Templating\GlobalHelper;
-use eZ\Publish\Core\MVC\Symfony\Templating\Tests\GlobalHelperTest as BaseGlobalHelperTest;
+use Ibexa\Core\MVC\Symfony\Templating\Tests\GlobalHelperTest as BaseGlobalHelperTest;
 use eZ\Publish\Core\MVC\Legacy\Templating\LegacyHelper;
 
 class GlobalHelperTest extends BaseGlobalHelperTest

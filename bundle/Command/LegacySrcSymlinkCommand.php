@@ -58,7 +58,7 @@ EOT
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $srcArg = rtrim($input->getArgument('src'), '/');
         $create = (bool)$input->getOption('create');
@@ -83,7 +83,7 @@ EOT
 , OutputInterface::VERBOSITY_QUIET
 );
 
-                return;
+                return 1;
             }
 
             $filesystem->mkdir([
@@ -112,6 +112,8 @@ re-run <info>ezpublish:legacy:symlink</info> to setup symlinks to eZ Publish leg
 
 EOT
 );
+
+        return 0;
     }
 
     /**

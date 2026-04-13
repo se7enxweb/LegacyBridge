@@ -8,7 +8,7 @@ namespace eZ\Bundle\EzPublishLegacyBundle\LegacyMapper;
 
 use eZ\Publish\Core\MVC\Legacy\Event\PreBuildKernelEvent;
 use eZ\Publish\Core\MVC\Legacy\LegacyEvents;
-use eZ\Publish\Core\MVC\Symfony\RequestStackAware;
+use Ibexa\Core\MVC\Symfony\RequestStackAware;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Component\HttpFoundation\Session\SessionInterface;
 use Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface;
@@ -35,7 +35,7 @@ class Session implements EventSubscriberInterface
      */
     private $sessionStorageKey;
 
-    public function __construct(SessionStorageInterface $sessionStorage, $sessionStorageKey, SessionInterface $session = null)
+    public function __construct(?SessionStorageInterface $sessionStorage, $sessionStorageKey, SessionInterface $session = null)
     {
         $this->sessionStorage = $sessionStorage;
         $this->sessionStorageKey = $sessionStorageKey;

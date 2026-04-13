@@ -6,9 +6,9 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\Image;
 
-use eZ\Publish\Core\FieldType\Image\AliasCleanerInterface;
-use eZ\Publish\Core\IO\IOServiceInterface;
-use eZ\Publish\Core\IO\UrlRedecoratorInterface;
+use Ibexa\Core\FieldType\Image\AliasCleanerInterface;
+use Ibexa\Core\IO\IOServiceInterface;
+use Ibexa\Core\IO\UrlRedecoratorInterface;
 
 class AliasCleaner implements AliasCleanerInterface
 {

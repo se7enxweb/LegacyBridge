@@ -7,7 +7,7 @@
 namespace eZ\Bundle\EzPublishLegacyBundle\EventListener;
 
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
-use EzSystems\EzPlatformRestBundle\RestEvents;
+use Ibexa\Bundle\Rest\RestEvents;
 use ezxFormToken;
 
 /**

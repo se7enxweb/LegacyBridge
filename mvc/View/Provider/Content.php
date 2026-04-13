@@ -6,12 +6,12 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\View\Provider;
 
-use eZ\Publish\Core\FieldType\XmlText\Converter\EmbedToHtml5;
+use Netgen\Bundle\SiteLegacyBundle\Core\FieldType\XmlText\Converter\EmbedToHtml5;
 use eZ\Publish\Core\MVC\Legacy\View\Provider;
-use eZ\Publish\Core\MVC\Symfony\View\View;
-use eZ\Publish\Core\MVC\Symfony\View\ViewProvider;
-use eZ\Publish\Core\MVC\Symfony\View\ContentView;
-use eZ\Publish\Core\MVC\Symfony\View\ContentValueView;
+use Ibexa\Core\MVC\Symfony\View\View;
+use Ibexa\Core\MVC\Symfony\View\ViewProvider;
+use Ibexa\Core\MVC\Symfony\View\ContentView;
+use Ibexa\Core\MVC\Symfony\View\ContentValueView;
 use eZContentObject;
 use eZTemplate;
 use ezpEvent;

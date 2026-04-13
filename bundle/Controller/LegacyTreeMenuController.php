@@ -6,7 +6,7 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Controller;
 
-use eZ\Publish\Core\MVC\Symfony\Controller\Controller;
+use Ibexa\Core\MVC\Symfony\Controller\Controller;
 use eZ\Publish\Core\MVC\Legacy\Kernel\Loader;
 use Symfony\Component\HttpFoundation\Response;
 

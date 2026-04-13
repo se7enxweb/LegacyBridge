@@ -12,7 +12,7 @@ use eZINI;
 use ezpSessionHandlerSymfony;
 use eZSession;
 use RuntimeException;
-use eZ\Publish\Core\MVC\Symfony\SiteAccess;
+use Ibexa\Core\MVC\Symfony\SiteAccess;
 use Symfony\Component\DependencyInjection\ContainerInterface;
 
 class CLIHandler implements ezpKernelHandler

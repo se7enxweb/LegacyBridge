@@ -8,9 +8,9 @@ namespace eZ\Bundle\EzPublishLegacyBundle\LegacyMapper;
 
 use eZ\Publish\Core\MVC\Legacy\LegacyEvents;
 use eZ\Publish\Core\MVC\Legacy\Event\PreBuildKernelWebHandlerEvent;
-use eZ\Publish\Core\MVC\Symfony\SiteAccess\Matcher\CompoundInterface;
+use Ibexa\Core\MVC\Symfony\SiteAccess\Matcher\CompoundInterface;
 use eZSiteAccess;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Ibexa\Core\MVC\Symfony\SiteAccess as SiteAccessObject;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 
 /**
@@ -18,13 +18,18 @@ use Symfony\Component\EventDispatcher\EventSubscriberInterface;
  */
 class SiteAccess implements EventSubscriberInterface
 {
-    use ContainerAwareTrait;
-
     protected $options = [];
+
+    private ?SiteAccessObject $siteAccess = null;
 
     public function __construct(array $options = [])
     {
         $this->options = $options;
+    }
+
+    public function setSiteAccess(SiteAccessObject $siteAccess): void
+    {
+        $this->siteAccess = $siteAccess;
     }
 
     public static function getSubscribedEvents()
@@ -41,7 +46,7 @@ class SiteAccess implements EventSubscriberInterface
      */
     public function onBuildKernelWebHandler(PreBuildKernelWebHandlerEvent $event)
     {
-        $siteAccess = $this->container->get('ezpublish.siteaccess');
+        $siteAccess = $this->siteAccess;
         $request = $event->getRequest();
         $uriPart = [];
 

@@ -7,7 +7,7 @@
 namespace eZ\Publish\Core\MVC\Legacy\Templating\Adapter;
 
 use eZ\Publish\Core\MVC\Legacy\Templating\LegacyCompatible;
-use eZ\Publish\API\Repository\Values\ValueObject;
+use Ibexa\Contracts\Core\Repository\Values\ValueObject;
 
 /**
  * Generic adapter allowing any ValueObject implementation to be LegacyCompatible with the help of a hash map,

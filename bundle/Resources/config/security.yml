@@ -24,16 +24,12 @@ services:
         tags:
             - { name: kernel.event_subscriber }
 
-    ezpublish_legacy.security.sso_firewall_listener:
-        class: eZ\Publish\Core\MVC\Legacy\Security\Firewall\SSOListener
+    ezpublish_legacy.security.sso_authenticator:
+        class: eZ\Publish\Core\MVC\Legacy\Security\SSOAuthenticator
         public: false
         abstract: true
         arguments:
-            - "@security.token_storage"
-            - "@security.authentication.manager"
-            - ~     # Will be replaced at compile time by the security factory to be the right user provider
+            - ~     # Replaced at compile time by the security factory (userProviderId)
+            - "@ezpublish_legacy.kernel"
+            - "@ezpublish.api.service.user"
             - "@?logger"
-            - "@?event_dispatcher"
-        calls:
-            - [setLegacyKernelClosure, ["@ezpublish_legacy.kernel"]]
-            - [setUserService, ["@ezpublish.api.service.user"]]

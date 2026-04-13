@@ -6,17 +6,17 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\LegacyMapper;
 
-use eZ\Publish\Core\FieldType\Image\AliasCleanerInterface;
+use Ibexa\Core\FieldType\Image\AliasCleanerInterface;
 use eZ\Publish\Core\MVC\Legacy\LegacyEvents;
 use eZ\Publish\Core\MVC\Legacy\Event\PreBuildKernelEvent;
-use eZ\Publish\Core\MVC\ConfigResolverInterface;
-use EzSystems\PlatformHttpCacheBundle\PurgeClient\PurgeClientInterface;
+use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
+use Ibexa\Contracts\HttpCache\PurgeClient\PurgeClientInterface;
 use eZ\Bundle\EzPublishLegacyBundle\Cache\PersistenceCachePurger;
-use eZ\Publish\Core\MVC\Symfony\Routing\Generator\UrlAliasGenerator;
+use Ibexa\Core\MVC\Symfony\Routing\Generator\UrlAliasGenerator;
 use Doctrine\DBAL\Connection;
 use ezpEvent;
 use ezxFormToken;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
+use Symfony\Component\DependencyInjection\ParameterBag\ParameterBagInterface;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use RuntimeException;
 use Exception;
@@ -26,7 +26,7 @@ use Exception;
  */
 class Configuration implements EventSubscriberInterface
 {
-    use ContainerAwareTrait;
+    private ParameterBagInterface $parameterBag;
 
     /**
      * @var \eZ\Publish\Core\MVC\ConfigResolverInterface
@@ -96,6 +96,11 @@ class Configuration implements EventSubscriberInterface
     public function setEnabled($isEnabled)
     {
         $this->enabled = (bool)$isEnabled;
+    }
+
+    public function setParameterBag(ParameterBagInterface $parameterBag): void
+    {
+        $this->parameterBag = $parameterBag;
     }
 
     public static function getSubscribedEvents()
@@ -197,11 +202,11 @@ class Configuration implements EventSubscriberInterface
         if (class_exists('ezxFormToken')) {
             // Inject csrf protection settings to make sure legacy & symfony stack work together
             if (
-                $this->container->hasParameter('form.type_extension.csrf.enabled') &&
-                $this->container->getParameter('form.type_extension.csrf.enabled')
+                $this->parameterBag->has('form.type_extension.csrf.enabled') &&
+                $this->parameterBag->get('form.type_extension.csrf.enabled')
             ) {
-                ezxFormToken::setSecret($this->container->getParameter('kernel.secret'));
-                ezxFormToken::setFormField($this->container->getParameter('form.type_extension.csrf.field_name'));
+                ezxFormToken::setSecret($this->parameterBag->get('kernel.secret'));
+                ezxFormToken::setFormField($this->parameterBag->get('form.type_extension.csrf.field_name'));
             }
             // csrf protection is disabled, disable it in legacy extension as well.
             else {
@@ -310,15 +315,15 @@ class Configuration implements EventSubscriberInterface
     private function getClusterSettings()
     {
         $clusterSettings = [];
-        if ($this->container->hasParameter('dfs_nfs_path')) {
+        if ($this->parameterBag->has('dfs_nfs_path')) {
             $clusterSettings += [
                 'file.ini/ClusteringSettings/FileHandler' => 'eZDFSFileHandler',
-                'file.ini/eZDFSClusteringSettings/MountPointPath' => $this->container->getParameter('dfs_nfs_path'),
-                'file.ini/eZDFSClusteringSettings/DBHost' => $this->container->getParameter('dfs_database_host'),
-                'file.ini/eZDFSClusteringSettings/DBPort' => $this->container->getParameter('dfs_database_port'),
-                'file.ini/eZDFSClusteringSettings/DBName' => $this->container->getParameter('dfs_database_name'),
-                'file.ini/eZDFSClusteringSettings/DBUser' => $this->container->getParameter('dfs_database_user'),
-                'file.ini/eZDFSClusteringSettings/DBPassword' => $this->container->getParameter('dfs_database_password'),
+                'file.ini/eZDFSClusteringSettings/MountPointPath' => $this->parameterBag->get('dfs_nfs_path'),
+                'file.ini/eZDFSClusteringSettings/DBHost' => $this->parameterBag->get('dfs_database_host'),
+                'file.ini/eZDFSClusteringSettings/DBPort' => $this->parameterBag->get('dfs_database_port'),
+                'file.ini/eZDFSClusteringSettings/DBName' => $this->parameterBag->get('dfs_database_name'),
+                'file.ini/eZDFSClusteringSettings/DBUser' => $this->parameterBag->get('dfs_database_user'),
+                'file.ini/eZDFSClusteringSettings/DBPassword' => $this->parameterBag->get('dfs_database_password'),
             ];
         }
 

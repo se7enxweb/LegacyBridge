@@ -6,8 +6,8 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\FieldType\Image\IO;
 
-use eZ\Publish\Core\IO\IOServiceInterface;
-use eZ\Publish\Core\MVC\ConfigResolverInterface;
+use Ibexa\Core\IO\IOServiceInterface;
+use Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface;
 
 /**
  * Factory for the Legacy Image IOService.

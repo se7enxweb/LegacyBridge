@@ -6,7 +6,7 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\Templating;
 
-use eZ\Publish\Core\MVC\Symfony\Templating\GlobalHelper as BaseGlobalHelper;
+use Ibexa\Core\MVC\Symfony\Templating\GlobalHelper as BaseGlobalHelper;
 
 class GlobalHelper extends BaseGlobalHelper
 {

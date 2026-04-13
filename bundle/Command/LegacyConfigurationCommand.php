@@ -13,7 +13,7 @@ use Symfony\Component\Console\Input\InputInterface;
 use Symfony\Component\Console\Output\OutputInterface;
 use Symfony\Component\Console\Input\InputArgument;
 use Symfony\Component\Console\Input\InputOption;
-use eZ\Publish\Core\MVC\Symfony\ConfigDumperInterface;
+use Ibexa\Core\MVC\Symfony\ConfigDumperInterface;
 use eZ\Publish\Core\MVC\Legacy\Kernel\Loader;
 use Symfony\Component\HttpKernel\KernelInterface;
 
@@ -66,7 +66,7 @@ EOT
             );
     }
 
-    protected function execute(InputInterface $input, OutputInterface $output)
+    protected function execute(InputInterface $input, OutputInterface $output): int
     {
         $package = $input->getArgument('package');
         $adminSiteaccess = $input->getArgument('adminsiteaccess');
@@ -87,5 +87,7 @@ EOT
 
         $output->writeln('Configuration written to ezpublish.yml and environment related ezpublish configuration files.');
         $output->writeln('Make sure to apply the config relevant to your install to your ezplatform.yml file.');
+
+        return 0;
     }
 }

@@ -7,7 +7,7 @@
 namespace eZ\Bundle\EzPublishLegacyBundle\Cache;
 
 use eZ\Bundle\EzPublishLegacyBundle\LegacyMapper\Configuration;
-use eZ\Publish\Core\MVC\Symfony\SiteAccess;
+use Ibexa\Core\MVC\Symfony\SiteAccess;
 use Symfony\Component\Filesystem\Filesystem;
 use Symfony\Component\HttpKernel\CacheClearer\CacheClearerInterface;
 use eZCacheHelper;
@@ -63,7 +63,7 @@ class LegacyCachePurger implements CacheClearerInterface
      *
      * @param string $cacheDir the cache directory
      */
-    public function clear($cacheDir)
+    public function clear(string $cacheDir): void
     {
         if (!is_dir($this->legacyRootDir)) {
             return;

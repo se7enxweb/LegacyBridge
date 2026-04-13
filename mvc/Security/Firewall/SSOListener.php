@@ -6,8 +6,8 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\Security\Firewall;
 
-use eZ\Publish\API\Repository\UserService;
-use eZ\Publish\Core\MVC\Symfony\Security\User;
+use Ibexa\Contracts\Core\Repository\UserService;
+use Ibexa\Core\MVC\Symfony\Security\User;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Security\Http\Firewall\AbstractPreAuthenticatedListener;
 use eZINI;

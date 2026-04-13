@@ -6,7 +6,7 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\SetupWizard;
 
-use eZ\Publish\Core\MVC\Symfony\ConfigDumperInterface;
+use Ibexa\Core\MVC\Symfony\ConfigDumperInterface;
 use Symfony\Component\Yaml\Yaml;
 use Symfony\Component\Filesystem\Filesystem;
 

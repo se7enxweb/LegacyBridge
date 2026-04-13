@@ -7,12 +7,11 @@
 namespace eZ\Publish\Core\MVC\Legacy\View\Provider;
 
 use eZ\Publish\Core\MVC\Legacy\View\Provider;
-use eZ\Publish\Core\MVC\Symfony\View\BlockValueView;
-use eZ\Publish\Core\MVC\Symfony\View\View;
-use eZ\Publish\Core\MVC\Symfony\View\ViewProvider;
+use Ibexa\Core\MVC\Symfony\View\View;
+use Ibexa\Core\MVC\Symfony\View\ViewProvider;
 use eZ\Publish\Core\MVC\Legacy\Templating\Adapter\BlockAdapter;
-use eZ\Publish\Core\MVC\Symfony\View\ContentView;
-use eZ\Publish\Core\FieldType\Page\PageService;
+use Ibexa\Core\MVC\Symfony\View\ContentView;
+use eZ\Bundle\EzPublishLegacyBundle\FieldType\Page\PageService;
 use eZTemplate;
 use ezpEvent;
 
@@ -40,7 +39,7 @@ class Block extends Provider implements ViewProvider
      */
     public function getView(View $view)
     {
-        if (!$view instanceof BlockValueView) {
+        if (!$view instanceof ContentView) {
             return null;
         }
 

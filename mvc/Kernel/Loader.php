@@ -16,8 +16,8 @@ use eZ\Publish\Core\MVC\Legacy\Event\PreBuildKernelEvent;
 use ezpKernelHandler;
 use ezpKernelRest;
 use ezpKernelTreeMenu;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Psr\Log\LoggerInterface;
+use Symfony\Component\DependencyInjection\ContainerInterface;
 use Symfony\Component\HttpFoundation\ParameterBag;
 use Symfony\Component\HttpFoundation\RequestStack;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
@@ -27,7 +27,12 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class Loader
 {
-    use ContainerAwareTrait;
+    protected ContainerInterface $container;
+
+    public function setContainer(ContainerInterface $container): void
+    {
+        $this->container = $container;
+    }
 
     /**
      * @var string Absolute path to the legacy root directory (eZPublish 4 install dir)

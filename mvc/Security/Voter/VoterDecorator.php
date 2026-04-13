@@ -7,11 +7,11 @@
 namespace eZ\Publish\Core\MVC\Legacy\Security\Voter;
 
 use Closure;
-use eZ\Publish\API\Repository\Exceptions\InvalidArgumentException;
+use Ibexa\Contracts\Core\Repository\Exceptions\InvalidArgumentException;
 use eZUser;
 use Symfony\Component\Security\Core\Authentication\Token\TokenInterface;
 use Symfony\Component\Security\Core\Authorization\Voter\VoterInterface;
-use eZ\Publish\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
+use Ibexa\Core\MVC\Symfony\Security\Authorization\Attribute as AuthorizationAttribute;
 
 class VoterDecorator implements VoterInterface
 {
@@ -47,7 +47,7 @@ class VoterDecorator implements VoterInterface
      *
      * @return int
      */
-    public function vote(TokenInterface $token, $object, array $attributes)
+    public function vote(TokenInterface $token, mixed $object, array $attributes): int
     {
         try {
             return $this->innerVoter->vote($token, $object, $attributes);

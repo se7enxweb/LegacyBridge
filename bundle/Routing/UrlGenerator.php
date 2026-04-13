@@ -7,7 +7,7 @@
 namespace eZ\Bundle\EzPublishLegacyBundle\Routing;
 
 use eZModule;
-use eZ\Publish\Core\MVC\Symfony\Routing\Generator;
+use Ibexa\Core\MVC\Symfony\Routing\Generator;
 
 class UrlGenerator extends Generator
 {
@@ -42,7 +42,7 @@ class UrlGenerator extends Generator
      *
      * @return string
      */
-    public function doGenerate($legacyModuleUri, array $parameters)
+    public function doGenerate(mixed $legacyModuleUri, array $parameters): string
     {
         // Getting query string
         $uriComponents = parse_url($legacyModuleUri);

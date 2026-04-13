@@ -9,7 +9,6 @@ namespace eZ\Bundle\EzPublishLegacyBundle\EventListener;
 use eZ\Publish\Core\MVC\Legacy\LegacyEvents;
 use eZ\Publish\Core\MVC\Legacy\Event\PreResetLegacyKernelEvent;
 use eZINI;
-use Symfony\Component\DependencyInjection\ContainerAwareTrait;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;
 use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
 
@@ -19,8 +18,6 @@ use Symfony\Contracts\EventDispatcher\EventDispatcherInterface;
  */
 class LegacyKernelListener implements EventSubscriberInterface
 {
-    use ContainerAwareTrait;
-
     /**
      * @var EventDispatcherInterface
      */

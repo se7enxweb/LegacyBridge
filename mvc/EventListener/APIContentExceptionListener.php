@@ -6,14 +6,14 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\EventListener;
 
-use eZ\Publish\Core\MVC\Symfony\Event\APIContentExceptionEvent;
-use eZ\Publish\Core\MVC\Symfony\MVCEvents;
-use eZ\Publish\Core\MVC\Symfony\View\ContentView;
-use eZ\Publish\Core\Persistence\Legacy\Content\FieldValue\Converter\Exception\NotFound as ConverterNotFound;
-use eZ\Publish\Core\Repository\Values\Content\Location;
-use eZ\Publish\Core\Repository\Values\Content\Content;
-use eZ\Publish\API\Repository\Values\Content\ContentInfo;
-use eZ\Publish\Core\Repository\Values\Content\VersionInfo;
+use Ibexa\Core\MVC\Symfony\Event\APIContentExceptionEvent;
+use Ibexa\Core\MVC\Symfony\MVCEvents;
+use Ibexa\Core\MVC\Symfony\View\ContentView;
+use Ibexa\Core\Persistence\Legacy\Content\FieldValue\Converter\Exception\NotFound as ConverterNotFound;
+use Ibexa\Contracts\Core\Repository\Values\Content\Location;
+use Ibexa\Contracts\Core\Repository\Values\Content\Content;
+use Ibexa\Contracts\Core\Repository\Values\Content\ContentInfo;
+use Ibexa\Contracts\Core\Repository\Values\Content\VersionInfo;
 use eZ\Publish\Core\MVC\Legacy\View\Provider\Content as LegacyContentViewProvider;
 use eZ\Publish\Core\MVC\Legacy\View\Provider\Location as LegacyLocationViewProvider;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

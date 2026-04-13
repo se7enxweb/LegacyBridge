@@ -6,7 +6,7 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\Routing;
 
-use eZ\Bundle\EzPublishCoreBundle\Routing\DefaultRouter as BaseRouter;
+use Ibexa\Bundle\Core\Routing\DefaultRouter as BaseRouter;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 
@@ -24,7 +24,7 @@ class DefaultRouter extends BaseRouter
         $this->legacyAwareRoutes = $routes;
     }
 
-    public function matchRequest(Request $request)
+    public function matchRequest(Request $request): array
     {
         $this->setContext($this->context->fromRequest($request));
         $attributes = parent::matchRequest($request);

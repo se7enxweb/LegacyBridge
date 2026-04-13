@@ -6,11 +6,12 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\Image;
 
-use eZ\Publish\SPI\Variation\VariationHandler;
-use eZ\Publish\API\Repository\Values\Content\Field;
-use eZ\Publish\API\Repository\Values\Content\VersionInfo;
-use eZ\Publish\SPI\Variation\Values\ImageVariation;
-use eZ\Publish\API\Repository\Exceptions\InvalidVariationException;
+use Ibexa\Contracts\Core\Variation\VariationHandler;
+use Ibexa\Contracts\Core\Repository\Values\Content\Field;
+use Ibexa\Contracts\Core\Repository\Values\Content\VersionInfo;
+use Ibexa\Contracts\Core\Variation\Values\ImageVariation;
+use Ibexa\Contracts\Core\Variation\Values\Variation;
+use Ibexa\Contracts\Core\Repository\Exceptions\InvalidVariationException;
 use eZContentObjectAttribute;
 use eZImageAliasHandler;
 use Closure;
@@ -63,7 +64,7 @@ class AliasGenerator implements VariationHandler
      *
      * @return \eZ\Publish\SPI\Variation\Values\ImageVariation
      */
-    public function getVariation(Field $field, VersionInfo $versionInfo, $variationName, array $parameters = [])
+    public function getVariation(Field $field, VersionInfo $versionInfo, string $variationName, array $parameters = []): Variation
     {
         $variationIdentifier = "$field->id-$versionInfo->versionNo-$variationName";
         if (isset($this->variations[$variationIdentifier])) {

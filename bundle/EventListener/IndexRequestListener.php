@@ -6,7 +6,7 @@
  */
 namespace eZ\Bundle\EzPublishLegacyBundle\EventListener;
 
-use eZ\Bundle\EzPublishCoreBundle\EventListener\IndexRequestListener as CoreIndexListener;
+use Ibexa\Bundle\Core\EventListener\IndexRequestListener as CoreIndexListener;
 use Symfony\Component\HttpKernel\Event\RequestEvent;
 
 class IndexRequestListener extends CoreIndexListener
