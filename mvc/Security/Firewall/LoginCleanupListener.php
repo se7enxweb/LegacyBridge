@@ -32,7 +32,9 @@ class LoginCleanupListener implements EventSubscriberInterface
     public function onInteractiveLogin(InteractiveLoginEvent $e)
     {
         $request = $e->getRequest();
-        if (!$e->getAuthenticationToken()->isAuthenticated() && $request->cookies->has('is_logged_in')) {
+        // In Symfony 6+ isAuthenticated() was removed; tokens are always authenticated.
+        // This legacy cleanup path (anonymous token forced in session) can no longer occur.
+        if ($request->cookies->has('is_logged_in')) {
             $request->getSession()->invalidate();
             $this->needsCookieCleanup = true;
         }
