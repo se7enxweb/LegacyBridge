@@ -34,7 +34,7 @@ class PreviewController extends BasePreviewController
         $request = parent::getForwardRequest($location, $content, $previewSiteAccess, $request, $language);
         // If the preview siteaccess is configured in legacy_mode, we forward to the LegacyKernelController.
         if ($this->configResolver->getParameter('legacy_mode', 'ezsettings', $previewSiteAccess->name)) {
-            $request->attributes->set('_controller', 'ezpublish_legacy.controller:indexAction');
+            $request->attributes->set('_controller', 'ezpublish_legacy.controller::indexAction');
         }
 
         return $request;

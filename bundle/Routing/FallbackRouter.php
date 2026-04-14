@@ -129,7 +129,7 @@ class FallbackRouter implements RouterInterface, RequestMatcherInterface
 
         return [
             '_route' => self::ROUTE_NAME,
-            '_controller' => 'ezpublish_legacy.controller:indexAction',
+            '_controller' => 'ezpublish_legacy.controller::indexAction',
             'module_uri' => $moduleUri,
         ];
     }

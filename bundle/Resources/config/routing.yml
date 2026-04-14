@@ -2,34 +2,34 @@
 _ezpublishLegacyTreeMenu:
     path: /content/treemenu/{nodeId}/{modified}/{expiry}/{perm}
     defaults:
-        _controller: ezpublish_legacy.treemenu.controller:viewMenu
+        _controller: ezpublish_legacy.treemenu.controller::viewMenu
         _format: json
 
 ezpublishSetup:
     path: /ezsetup
     defaults:
-        _controller: ezpublish_legacy.setup.controller:init
+        _controller: ezpublish_legacy.setup.controller::init
 
 _ezpublishLegacyLogin:
     path: /user/login
     defaults:
-        _controller: ezpublish_legacy.controller:loginAction
+        _controller: ezpublish_legacy.controller::loginAction
 
 _ezpublishLegacyLogout:
     path: /user/logout
     defaults:
-        _controller: ezpublish_legacy.controller:logoutAction
+        _controller: ezpublish_legacy.controller::logoutAction
 
 _ezpublishLegacyRest:
     path: /api/{provider}/v1/{path}
     defaults:
-        _controller: ezpublish_legacy.rest.controller:restAction
+        _controller: ezpublish_legacy.rest.controller::restAction
     requirements:
         path: .*
 
 _ezpublishLegacyLayoutSet:
     path: /layout/set/{path}
     defaults:
-        _controller: ezpublish_legacy.controller:indexAction
+        _controller: ezpublish_legacy.controller::indexAction
     requirements:
         path: .+
