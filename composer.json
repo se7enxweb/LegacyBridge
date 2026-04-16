@@ -21,7 +21,7 @@
         "se7enxweb/exponential": "dev-main",
         "se7enxweb/ezplatform-xmltext-fieldtype": "5.x-dev",
         "se7enxweb/sevenx_exponential_platform_v5_database_translator": "dev-main",
-        "se7enxweb/ngsymfonytools": "dev-v5.0",
+        "se7enxweb/ngsymfonytools": "v5.0.x-dev",
         "se7enxweb/richtext-datatype-bundle": "*",
         "se7enxweb/site-bundle": "5.0.x-dev",
         "se7enxweb/site-legacy-bundle": "5.0.x-dev",
