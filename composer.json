@@ -20,6 +20,7 @@
         "se7enxweb/ezpublish-legacy-installer": "^2.0.4",
         "se7enxweb/exponential": "dev-main",
         "se7enxweb/ezplatform-xmltext-fieldtype": "5.x-dev",
+        "se7enxweb/sevenx_exponential_platform_v5_database_translator": "dev-main",
         "ibexa/core": "^5.0",
         "symfony/framework-bundle": "^7.4"
     },
