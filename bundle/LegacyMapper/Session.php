@@ -65,13 +65,22 @@ class Session implements EventSubscriberInterface
             'has_previous' => false,
             'storage' => false,
         ];
-        if (isset($this->session)) {
-            $request = $this->getCurrentRequest();
+
+        $request = $this->getCurrentRequest();
+
+        // In Symfony 5.3+, the session service is request-scoped and may be null when
+        // injected via @?session. Additionally, PRE_BUILD_LEGACY_KERNEL fires before
+        // AbstractSessionListener sets the session on the request, so $request->hasSession()
+        // can also be false. Use $this->sessionStorage (always injected) directly and
+        // derive name/started from PHP native session state.
+        if ($this->sessionStorage !== null) {
+            // Try to get a session object for name/started; fall back to PHP native functions.
+            $session = $this->session ?? ($request !== null && $request->hasSession() ? $request->getSession() : null);
             $sessionInfos['configured'] = true;
-            $sessionInfos['name'] = $this->session->getName();
-            $sessionInfos['started'] = $this->session->isStarted();
+            $sessionInfos['name'] = $session !== null ? $session->getName() : session_name();
+            $sessionInfos['started'] = $session !== null ? $session->isStarted() : (session_status() === PHP_SESSION_ACTIVE);
             $sessionInfos['namespace'] = $this->sessionStorageKey;
-            $sessionInfos['has_previous'] = isset($request) ? $request->hasPreviousSession() : false;
+            $sessionInfos['has_previous'] = $request !== null ? $request->hasPreviousSession() : false;
             $sessionInfos['storage'] = $this->sessionStorage;
         }
 
