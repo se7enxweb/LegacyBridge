@@ -26,7 +26,7 @@ class Session implements EventSubscriberInterface
     private $session;
 
     /**
-     * @var \Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface
+     * @var \Symfony\Component\HttpFoundation\Session\Storage\SessionStorageInterface|null
      */
     private $sessionStorage;
 
@@ -35,7 +35,7 @@ class Session implements EventSubscriberInterface
      */
     private $sessionStorageKey;
 
-    public function __construct(SessionStorageInterface $sessionStorage, $sessionStorageKey, SessionInterface $session = null)
+    public function __construct(?SessionStorageInterface $sessionStorage = null, $sessionStorageKey = null, SessionInterface $session = null)
     {
         $this->sessionStorage = $sessionStorage;
         $this->sessionStorageKey = $sessionStorageKey;
