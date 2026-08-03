@@ -149,7 +149,7 @@ class PersistenceCachePurger implements CacheClearerInterface
      *
      * @throws \eZ\Publish\Core\Base\Exceptions\InvalidArgumentType On invalid $id type
      */
-    public function content($locationIds = null, array $contentIds = null)
+    public function content($locationIds = null,  ?array $contentIds = null)
     {
         if ($this->allCleared === true || $this->isSwitchedOff()) {
             return $locationIds;

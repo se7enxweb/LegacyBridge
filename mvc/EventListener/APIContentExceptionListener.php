@@ -36,7 +36,7 @@ class APIContentExceptionListener implements EventSubscriberInterface
      */
     protected $logger;
 
-    public function __construct(LegacyContentViewProvider $legacyCVP, LegacyLocationViewProvider $legacyLVP, LoggerInterface $logger = null)
+    public function __construct(LegacyContentViewProvider $legacyCVP, LegacyLocationViewProvider $legacyLVP,  ?LoggerInterface $logger = null)
     {
         $this->legacyCVP = $legacyCVP;
         $this->legacyLVP = $legacyLVP;

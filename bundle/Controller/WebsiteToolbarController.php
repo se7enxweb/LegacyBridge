@@ -55,7 +55,7 @@ class WebsiteToolbarController extends Controller
         $viewCache,
         $ttlCache,
         $defaultTtl,
-        CsrfTokenManagerInterface $csrfTokenManager = null
+         ?CsrfTokenManagerInterface $csrfTokenManager = null
     ) {
         $this->legacyTemplateEngine = $engine;
         $this->contentService = $contentService;

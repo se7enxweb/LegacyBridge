@@ -54,7 +54,7 @@ class Kernel extends ezpKernel
      * @param string $webRootDir Must be a absolute dir
      * @param \Psr\Log\LoggerInterface $logger
      */
-    public function __construct(ezpKernelHandler $kernelHandler, $legacyRootDir, $webRootDir, LoggerInterface $logger = null)
+    public function __construct(ezpKernelHandler $kernelHandler, $legacyRootDir, $webRootDir,  ?LoggerInterface $logger = null)
     {
         $this->legacyRootDir = $legacyRootDir;
         $this->webRootDir = $webRootDir;

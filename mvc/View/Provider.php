@@ -32,7 +32,7 @@ abstract class Provider
      */
     protected $legacyHelper;
 
-    public function __construct(Closure $legacyKernelClosure, TwigContentViewLayoutDecorator $decorator, LegacyHelper $legacyHelper, LoggerInterface $logger = null)
+    public function __construct(Closure $legacyKernelClosure, TwigContentViewLayoutDecorator $decorator, LegacyHelper $legacyHelper,  ?LoggerInterface $logger = null)
     {
         $this->legacyKernelClosure = $legacyKernelClosure;
         $this->decorator = $decorator;

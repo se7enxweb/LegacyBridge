@@ -34,7 +34,7 @@ class FallbackRouter implements RouterInterface, RequestMatcherInterface
      */
     private $urlGenerator;
 
-    public function __construct(UrlGenerator $urlGenerator, RequestContext $context = null, LoggerInterface $logger = null)
+    public function __construct(UrlGenerator $urlGenerator,  ?RequestContext $context = null,  ?LoggerInterface $logger = null)
     {
         $this->urlGenerator = $urlGenerator;
         $this->context = $context = $context ?: new RequestContext();

@@ -72,7 +72,7 @@ EOT
             foreach ($this->legacyExtensionsLocator->getExtensionDirectories($bundle->getPath()) as $extensionDir) {
                 $output->writeln('- ' . $this->removeCwd($extensionDir));
                 try {
-                    $target = $this->linkLegacyExtension($extensionDir, $options, $output);
+                    $target = $this->linkLegacyExtension($extensionDir, $output, $options);
                     $output->writeln('  <info>' . ($options['copy'] ? 'Copied' : 'linked') . "</info> to $target</info>");
                 } catch (RuntimeException $e) {
                     $output->writeln('  <error>' . $e->getMessage() . '</error>');
@@ -94,7 +94,7 @@ EOT
      *
      * @return string The resulting link/directory
      */
-    protected function linkLegacyExtension($extensionPath, array $options = [], OutputInterface $output)
+    protected function linkLegacyExtension($extensionPath, OutputInterface $output, array $options = [])
     {
         $options += ['force' => false, 'copy' => false, 'relative' => false];
         $filesystem = $this->filesystem;

@@ -78,7 +78,7 @@ class Loader
      */
     private $requestStack;
 
-    public function __construct($legacyRootDir, $webrootDir, EventDispatcherInterface $eventDispatcher, URIHelper $uriHelper, LoggerInterface $logger = null)
+    public function __construct($legacyRootDir, $webrootDir, EventDispatcherInterface $eventDispatcher, URIHelper $uriHelper,  ?LoggerInterface $logger = null)
     {
         $this->legacyRootDir = $legacyRootDir;
         $this->webrootDir = $webrootDir;

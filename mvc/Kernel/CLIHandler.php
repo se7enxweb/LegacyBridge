@@ -47,7 +47,7 @@ class CLIHandler implements ezpKernelHandler
      * @param \eZ\Publish\Core\MVC\Symfony\SiteAccess $siteAccess
      * @param \Symfony\Component\DependencyInjection\ContainerInterface $container
      */
-    public function __construct(array $settings = [], SiteAccess $siteAccess = null, ContainerInterface $container = null)
+    public function __construct(array $settings = [],  ?SiteAccess $siteAccess = null,  ?ContainerInterface $container = null)
     {
         $this->container = $container;
         if (isset($settings['injected-settings'])) {

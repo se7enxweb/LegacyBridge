@@ -22,7 +22,7 @@ class NotFoundHttpException extends BaseNotFoundHttpException
      * @param string $message
      * @param \Symfony\Component\HttpFoundation\Response $originalResponse
      */
-    public function __construct($message, Response $originalResponse = null)
+    public function __construct($message,  ?Response $originalResponse = null)
     {
         parent::__construct($message);
 

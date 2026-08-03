@@ -35,7 +35,7 @@ class Session implements EventSubscriberInterface
      */
     private $sessionStorageKey;
 
-    public function __construct(?SessionStorageInterface $sessionStorage, $sessionStorageKey, SessionInterface $session = null)
+    public function __construct(?SessionStorageInterface $sessionStorage, $sessionStorageKey,  ?SessionInterface $session = null)
     {
         $this->sessionStorage = $sessionStorage;
         $this->sessionStorageKey = $sessionStorageKey;
