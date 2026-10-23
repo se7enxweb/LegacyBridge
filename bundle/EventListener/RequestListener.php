@@ -59,12 +59,18 @@ class RequestListener implements EventSubscriberInterface
     {
         /** @var \eZ\Publish\Core\MVC\ConfigResolverInterface $configResolver */
         $request = $event->getRequest();
-        $session = $request->getSession();
         if (
             $event->getRequestType() !== HttpKernelInterface::MAIN_REQUEST
             || !$this->configResolver->getParameter('legacy_mode')
-            || !($session->isStarted() && $session->has('eZUserLoggedInID'))
+            // A request can arrive without a session, for instance when an earlier
+            // listener rejected it; getSession() would throw SessionNotFoundException.
+            || !$request->hasSession()
         ) {
+            return;
+        }
+
+        $session = $request->getSession();
+        if (!($session->isStarted() && $session->has('eZUserLoggedInID'))) {
             return;
         }
 
