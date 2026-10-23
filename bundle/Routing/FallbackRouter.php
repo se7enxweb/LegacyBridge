@@ -12,6 +12,7 @@ use Symfony\Component\Routing\RouteCollection;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Matcher\RequestMatcherInterface;
 use Symfony\Component\Routing\Exception\RouteNotFoundException;
+use Symfony\Component\Routing\Exception\ResourceNotFoundException;
 use Psr\Log\LoggerInterface;
 use RuntimeException;
 
@@ -33,6 +34,18 @@ class FallbackRouter implements RouterInterface, RequestMatcherInterface
      * @var UrlGenerator
      */
     private $urlGenerator;
+
+    /**
+     * Names of the Platform admin siteaccesses, as keys.
+     *
+     * @var array<string, true>
+     */
+    private $platformAdminSiteAccesses = [];
+
+    /**
+     * @var \eZ\Publish\Core\MVC\ConfigResolverInterface|null
+     */
+    private $configResolver;
 
     public function __construct(UrlGenerator $urlGenerator, RequestContext $context = null, LoggerInterface $logger = null)
     {
@@ -121,8 +134,46 @@ class FallbackRouter implements RouterInterface, RequestMatcherInterface
         throw new RuntimeException("The UrlAliasRouter doesn't support the match() method. Please use matchRequest() instead.");
     }
 
+    /**
+     * Sets the siteaccess groups (the "ibexa.site_access.groups" parameter) and the names of the groups whose
+     * siteaccesses belong to the Platform Admin UI. The legacy fallback does not serve those siteaccesses.
+     *
+     * @param array<string, string[]> $siteAccessGroups
+     * @param string[] $platformAdminGroups
+     */
+    public function setPlatformAdminSiteAccessGroups(array $siteAccessGroups, array $platformAdminGroups): void
+    {
+        $this->platformAdminSiteAccesses = [];
+        foreach ($platformAdminGroups as $groupName) {
+            foreach ($siteAccessGroups[$groupName] ?? [] as $siteAccessName) {
+                $this->platformAdminSiteAccesses[$siteAccessName] = true;
+            }
+        }
+    }
+
+    /**
+     * @param \eZ\Publish\Core\MVC\ConfigResolverInterface $configResolver (untyped: the 4.6 kernel names it Ibexa\Contracts\Core\SiteAccess\ConfigResolverInterface)
+     */
+    public function setConfigResolver($configResolver): void
+    {
+        $this->configResolver = $configResolver;
+    }
+
     public function matchRequest(Request $request)
     {
+        $siteAccess = $request->attributes->get('siteaccess');
+        $siteAccessName = is_object($siteAccess) && isset($siteAccess->name) ? (string)$siteAccess->name : null;
+        if ($siteAccessName !== null && $this->isPlatformAdminSiteAccess($siteAccessName)) {
+            // A path in the Platform admin siteaccess that no Platform route matches does not exist. Handing it to
+            // the legacy kernel would render a legacy page (the legacy login, with HTTP 200) for a siteaccess the
+            // legacy kernel has no settings for.
+            throw new ResourceNotFoundException(sprintf(
+                'No route found for "%s" in the Platform admin siteaccess "%s"; the legacy fallback does not serve it.',
+                $request->getPathInfo(),
+                $siteAccessName
+            ));
+        }
+
         $moduleUri = rtrim($request->attributes->get('semanticPathinfo', $request->getPathInfo()), '/')
                      . $request->attributes->get('viewParametersString', '')
                      . '?' . $request->getQueryString();
@@ -132,5 +183,24 @@ class FallbackRouter implements RouterInterface, RequestMatcherInterface
             '_controller' => 'ezpublish_legacy.controller:indexAction',
             'module_uri' => $moduleUri,
         ];
+    }
+
+    /**
+     * A siteaccess of the Platform admin groups, unless it runs in legacy mode (then the legacy kernel serves it).
+     */
+    private function isPlatformAdminSiteAccess(string $siteAccessName): bool
+    {
+        if (!isset($this->platformAdminSiteAccesses[$siteAccessName])) {
+            return false;
+        }
+
+        if ($this->configResolver !== null
+            && $this->configResolver->hasParameter('legacy_mode', null, $siteAccessName)
+            && $this->configResolver->getParameter('legacy_mode', null, $siteAccessName) === true
+        ) {
+            return false;
+        }
+
+        return true;
     }
 }

@@ -5,6 +5,10 @@ parameters:
     ezpublish_legacy.root_dir: "%kernel.project_dir%/ezpublish_legacy"
     ezpublish.default_router.legacy_aware_routes: ['_ezpublishLegacyTreeMenu', 'ezpublish_rest_', '_ezpublishPreviewContent', '_wdt', '_profiler', '_assetic']
 
+    # Siteaccess groups of the Platform Admin UI. The legacy fallback router does not serve their siteaccesses
+    # (unless one runs in legacy_mode), so an unknown path there is a 404 rather than a legacy page.
+    ezpublish_legacy.fallback_router.platform_admin_groups: ['admin_group']
+
     ezpublish_legacy.treemenu.controller.options: {}
 
     ezpublish_legacy.kernel_handler.cli.options:
@@ -153,6 +157,8 @@ services:
         class: eZ\Bundle\EzPublishLegacyBundle\Routing\FallbackRouter
         public: false
         arguments: ["@ezpublish_legacy.url_generator", "@?request_context", "@?logger"]
+        calls:
+            - [setConfigResolver, ["@ezpublish.config.resolver"]]
         tags:
             - {name: router, priority: -255}
         lazy: true
