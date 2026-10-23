@@ -85,6 +85,10 @@ class RequestListenerTest extends TestCase
         $request = $this->createMock(Request::class);
         $request
             ->expects($this->any())
+            ->method('hasSession')
+            ->will($this->returnValue(true));
+        $request
+            ->expects($this->any())
             ->method('getSession')
             ->will($this->returnValue($session));
         $session
@@ -118,6 +122,55 @@ class RequestListenerTest extends TestCase
             $this->createMock(HttpKernelInterface::class),
             $request,
             HttpKernelInterface::MASTER_REQUEST
+        );
+        $listener = new RequestListener($this->configResolver, $this->repository, $this->tokenStorage);
+        $listener->onKernelRequest($event);
+    }
+
+    public function testOnKernelRequestWithoutSession()
+    {
+        $this->configResolver
+            ->expects($this->once())
+            ->method('getParameter')
+            ->with('legacy_mode')
+            ->will($this->returnValue(true));
+        $this->repository
+            ->expects($this->never())
+            ->method('getUserService');
+
+        $request = $this->createMock(Request::class);
+        $request
+            ->expects($this->once())
+            ->method('hasSession')
+            ->will($this->returnValue(false));
+        $request
+            ->expects($this->never())
+            ->method('getSession');
+
+        $event = new RequestEvent(
+            $this->createMock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::MASTER_REQUEST
+        );
+        $listener = new RequestListener($this->configResolver, $this->repository, $this->tokenStorage);
+        $listener->onKernelRequest($event);
+    }
+
+    public function testOnKernelRequestSubRequestDoesNotTouchSession()
+    {
+        $this->configResolver
+            ->expects($this->never())
+            ->method('getParameter');
+
+        $request = $this->createMock(Request::class);
+        $request
+            ->expects($this->never())
+            ->method('getSession');
+
+        $event = new RequestEvent(
+            $this->createMock(HttpKernelInterface::class),
+            $request,
+            HttpKernelInterface::SUB_REQUEST
         );
         $listener = new RequestListener($this->configResolver, $this->repository, $this->tokenStorage);
         $listener->onKernelRequest($event);
