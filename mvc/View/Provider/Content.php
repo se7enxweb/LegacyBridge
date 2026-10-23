@@ -6,7 +6,7 @@
  */
 namespace eZ\Publish\Core\MVC\Legacy\View\Provider;
 
-use Netgen\Bundle\SiteLegacyBundle\Core\FieldType\XmlText\Converter\EmbedToHtml5;
+use eZ\Publish\Core\FieldType\XmlText\Converter\EmbedToHtml5;
 use eZ\Publish\Core\MVC\Legacy\View\Provider;
 use Ibexa\Core\MVC\Symfony\View\View;
 use Ibexa\Core\MVC\Symfony\View\ViewProvider;
