@@ -10,7 +10,7 @@ use eZ\Publish\Core\FieldType\Image\AliasCleanerInterface;
 use eZ\Publish\Core\MVC\Legacy\LegacyEvents;
 use eZ\Publish\Core\MVC\Legacy\Event\PreBuildKernelEvent;
 use eZ\Publish\Core\MVC\ConfigResolverInterface;
-use EzSystems\PlatformHttpCacheBundle\PurgeClient\PurgeClientInterface;
+use Ibexa\Contracts\HttpCache\PurgeClient\PurgeClientInterface;
 use eZ\Bundle\EzPublishLegacyBundle\Cache\PersistenceCachePurger;
 use eZ\Publish\Core\MVC\Symfony\Routing\Generator\UrlAliasGenerator;
 use Doctrine\DBAL\Connection;
@@ -34,7 +34,7 @@ class Configuration implements EventSubscriberInterface
     private $configResolver;
 
     /**
-     * @var \EzSystems\PlatformHttpCacheBundle\PurgeClient\PurgeClientInterface
+     * @var \Ibexa\Contracts\HttpCache\PurgeClient\PurgeClientInterface
      */
     private $purgeClient;
 
